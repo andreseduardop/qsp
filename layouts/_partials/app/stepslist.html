@@ -1,0 +1,53 @@
+<div class="col-12">
+  <div class="app-card col">
+    <h2>steps</h2>
+    <div id="stepslist-container">
+      <ol class="app-stepslist type-stepslist list-group list-group-numbered">
+        <li class="list-group-item p-2 d-flex align-items-start" draggable="true" data-id="1">
+          <div class="position-relative d-flex align-items-top flex-grow-1">
+            <label class="form-label flex-grow-1 mb-0" for="textarea-for-1">Step example</label>
+            <div class="d-flex flex-column ps-1 flex-grow-1 d-none"> 
+              <textarea class="form-control" data-role="inline-editor" aria-label="Edit step" name="inline-editor" rows="1" id="textarea-for-1">Editing step</textarea>
+              <div class="d-flex flex-column mt-2 small">
+                <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="save">
+                  <span>Save</span>
+                  <span class="text-muted">[Enter]</span>
+                </a>
+                <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="discard">
+                  <span>Discard</span>
+                  <span class="text-muted">[Esc]</span>
+                </a>
+                <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="delete">
+                  <span>Delete</span>
+                  <span class="text-muted">[Shift+Del]</span>
+                </a>
+                <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-spelling">
+                  <span class="app-icono">Fix spelling</span>
+                  <span class="text-muted">[Shift+F8]</span>
+                </a>
+                <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-improve">
+                  <span class="app-icono">Improve writing</span>
+                  <span class="text-muted">[Shift+F9]</span>
+                </a>
+                <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-breakdown">
+                  <span class="app-icono">Break down step</span>
+                  <span class="text-muted">[Shift+F10]</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <button class="btn app-btn-move" type="button" aria-label="Move" title="Move" aria-hidden="true" tabindex="-1" draggable="false">
+            <i class="bi bi-arrow-down-up" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li class="list-group-item p-2 d-flex align-items-center" data-role="new-entry" draggable="false">
+          <input type="text" class="form-control" placeholder="Add new step and press Enter" aria-label="Add new step" name="Add new step">
+          <button type="button" class="btn app-btn-add" title="Add new step" aria-label="Add new step">
+            <i class="bi bi-plus-lg fs-2"></i>
+            </i>
+          </button>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>

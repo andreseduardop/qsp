@@ -1,0 +1,108 @@
+<div class="col-12">
+  <div class="app-card col">
+    <h2>guests</h2>
+    <div id="guestlist-container">
+    </div>
+    <ul class="nav nav-tabs nav-fill" id="guestlist-tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="guestlist-pending-tab" data-bs-toggle="tab" data-bs-target="#guestlist-pending-tab-pane" type="button" role="tab" aria-controls="guestlist-pending-tab-pane" aria-selected="true" style="">Pending</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="guestlist-completed-tab" data-bs-toggle="tab" data-bs-target="#guestlist-completed-tab-pane" type="button" role="tab" aria-controls="guestlist-completed-tab-pane" aria-selected="false" style="" tabindex="-1">Confirmed</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="guestlist-tabs-content">
+      <div class="tab-pane fade active show" id="guestlist-pending-tab-pane" role="tabpanel" aria-labelledby="guestlist-pending-tab" tabindex="0">
+        <ul class="app-guestlist type-checkbox list-group">
+          <li class="list-group-item p-2 d-flex align-items-start" draggable="true" data-id="1">
+            <div class="form-check position-relative d-flex align-items-top flex-grow-1">
+              <input class="form-check-input squircle" type="checkbox" id="guestlist-check-1">
+              <label class="form-check-label flex-grow-1" for="textarea-for-1">Pending guest example</label>
+              <div class="d-flex flex-column ps-1 flex-grow-1 d-none" data-role="inline-panel">
+                <textarea class="form-control" data-role="inline-editor" aria-label="Edit guest text" name="inline-editor" rows="1" id="textarea-for-1">
+                </textarea>
+                <div class="d-flex flex-column mt-2 small">
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="save">
+                    <span>Save</span>
+                    <span class="text-muted">[Enter]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="discard">
+                    <span>Discard</span>
+                    <span class="text-muted">[Esc]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="delete">
+                    <span>Delete</span>
+                    <span class="text-muted">[Shift+Del]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-spelling">
+                    <span class="app-icono">Fix spelling</span>
+                    <span class="text-muted">[Shift+F8]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-improve">
+                    <span class="app-icono">Improve writing</span>
+                    <span class="text-muted">[Shift+F9]</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <button class="btn app-btn-move" type="button" aria-label="Move" title="Move" aria-hidden="true" tabindex="-1" draggable="false">
+              <i class="bi bi-arrow-down-up" aria-hidden="true">
+              </i>
+            </button>
+          </li>
+          <li class="list-group-item p-2 d-flex align-items-start" data-role="new-entry" draggable="false">
+            <input class="form-control" type="text" name="new-guest" placeholder="Add new guest and press Enter" aria-label="Add new guest">
+            <button class="btn app-btn-add" type="button" title="Add new guest" aria-label="Add new guest">
+              <i class="bi bi-plus-lg fs-2" aria-hidden="true">
+              </i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-pane fade" id="guestlist-completed-tab-pane" role="tabpanel" aria-labelledby="guestlist-completed-tab" tabindex="0">
+        <ul class="app-guestlist type-checkbox list-group">
+          <li class="list-group-item p-2 d-flex align-items-start" draggable="true" data-id="2">
+            <div class="form-check position-relative d-flex align-items-top flex-grow-1">
+              <input class="form-check-input squircle" type="checkbox" id="guestlist-check-2">
+              <label class="form-check-label flex-grow-1" for="textarea-for-2">Confirmed guest example</label>
+              <div class="d-flex flex-column ps-1 flex-grow-1 d-none" data-role="inline-panel">
+                <textarea class="form-control" data-role="inline-editor" aria-label="Edit guest text" name="inline-editor" rows="1" id="textarea-for-2">
+                </textarea>
+                <div class="d-flex flex-column mt-2 small">
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="save">
+                    <span>Save</span>
+                    <span class="text-muted">[Enter]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="discard">
+                    <span>Discard</span>
+                    <span class="text-muted">[Esc]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="delete">
+                    <span>Delete</span>
+                    <span class="text-muted">[Shift+Del]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-spelling">
+                    <span class="app-icono">Fix spelling</span>
+                    <span class="text-muted">[Shift+F8]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-improve">
+                    <span class="app-icono">Improve writing</span>
+                    <span class="text-muted">[Shift+F9]</span>
+                  </a>
+                  <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-breakdown">
+                    <span class="app-icono">Break down guest</span>
+                    <span class="text-muted">[Shift+F10]</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <button class="btn app-btn-move" type="button" aria-label="Move" title="Move" aria-hidden="true" tabindex="-1" draggable="false">
+              <i class="bi bi-arrow-down-up" aria-hidden="true">
+              </i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

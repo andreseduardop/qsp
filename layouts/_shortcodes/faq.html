@@ -1,0 +1,61 @@
+{{ $fileName := "" }}
+{{ $dataJson := "" }}
+{{ with .Get 0 }}
+	{{ $fileName = . }}
+{{ else }}
+	{{ $fileName = printf "%s%s%s" "faq." page.Language.Lang ".json" }}
+{{ end }}
+
+{{ with .Page.Resources.Get $fileName }}
+  {{ with . | transform.Unmarshal }}
+		{{ $dataJson = . }}
+  {{ end }}
+{{ else }}
+  {{ errorf "No se obtuvieron recursos para FAQ, en el path %q" $fileName }}
+{{ end }}
+{{ $faqNumber := add .Ordinal 1 }}
+
+<!-- Publica cada uno de los elementos del array contenido en el .json -->
+<div class="accordion sc-faq mb-5" id="faq-{{ $faqNumber }}" 
+	itemscope itemtype="https://schema.org/FAQPage" role="list">
+	{{ range $index, $value := $dataJson.questions }}
+		{{ $numQuestion := add $index 1 }}
+		{{ $isFirst := (eq $index 0) }}
+
+		{{ if (and (gt (len $dataJson.questions) 7) (eq $numQuestion 6)) }}
+			<h3 role="presentation">{{ T "more_ideas" }}</h3>
+		  <div class="accordion-item border-top" 
+		  	itemprop="mainEntity" itemscope itemtype="https://schema.org/Question" 
+		  	role="listitem">
+		{{ else }}
+		  <div class="accordion-item" 
+		  	itemprop="mainEntity" itemscope itemtype="https://schema.org/Question" 
+		  	role="listitem">
+		{{ end }}
+	    <div class="accordion-header"
+	    	itemprop="name"
+	    	id="faq-{{ $faqNumber }}-name-{{ $numQuestion }}-{{ anchorize .q }}">
+	      <button class="accordion-button fw-medium p-2{{ if not $isFirst }} collapsed{{ end }}" 
+	      	type="button" data-bs-toggle="collapse" data-bs-target="#faq-{{ $faqNumber }}-acceptedAnswer-{{ $numQuestion }}" 
+	      	aria-expanded="{{ $isFirst }}" 
+	      	aria-controls="faq-{{ $faqNumber }}-question-{{ $numQuestion }}">
+					<span class="flex-shrink-0 text-dark pe-2">
+						{{ $numQuestion }}.
+					</span>
+					<span class="pe-2">
+						{{ .q | markdownify }}
+					</span>
+	      </button>
+	    </div>
+	    <div id="faq-{{ $faqNumber }}-acceptedAnswer-{{ $numQuestion }}" 
+	    	class="accordion-collapse collapse m-0{{ if $isFirst }} show{{ end }}" 
+	    	data-bs-parent="#faq-{{ $faqNumber }}"
+	    	itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+	      <div class="accordion-body" itemprop="text"
+	      	id="faq-{{ $faqNumber }}-text-{{ $numQuestion }}-{{ anchorize .q }}">
+	        {{ .a | markdownify }}
+	      </div>
+	    </div>
+	  </div>
+  {{ end }}
+</div>

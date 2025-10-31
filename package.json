@@ -1,0 +1,20 @@
+{
+  "name": "quick-smart-plan",
+  "version": "1.2.0",
+  "description": "Automatic checklists with AI",
+  "license": "MIT",
+  "author": "Tuli y Des",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@fullhuman/postcss-purgecss": "^7.0.2",
+    "autoprefixer": "^10.4.21",
+    "bootstrap": "^5.3.8",
+    "jsonrepair": "^3.13.1",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1"
+  }
+}

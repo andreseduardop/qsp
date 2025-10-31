@@ -1,0 +1,40 @@
+{{ $fileName := "" }}
+{{ $dataJson := "" }}
+{{ with .Get 0 }}
+	{{ $fileName = . }}
+{{ else }}
+	{{ $fileName = printf "%s%s%s" "faq." page.Language.Lang ".json" }}
+{{ end }}
+
+{{ with .Page.Resources.Get $fileName }}
+  {{ with . | transform.Unmarshal }}
+		{{ $dataJson = . }}
+  {{ end }}
+{{ else }}
+  {{ errorf "No se obtuvieron recursos para FAQ, en el path %q" $fileName }}
+{{ end }}
+
+<!-- Publica cada uno de los elementos del array contenido en el .json -->
+<div itemscope itemtype="https://schema.org/FAQPage">
+	<h2 class="d-none fs-5 m-2 p-0">
+	  {{ T "frequently_asked_questions" }}
+	</h2>
+	{{ range $index, $value := $dataJson.questions }}
+	{{ $num := add $index 1 }}
+	<details {{ if eq $index 0 }} open{{ end }} itemprop="mainEntity" itemscope itemtype="https://schema.org/Question">
+		<summary itemprop="name">
+			<h3 class="fs-6 m-0 p-0">
+				<span class="text-dark">
+					{{ $num }}. 
+				</span>
+				{{ .q | markdownify }}
+			</h3>
+		</summary>
+		<div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+			<span itemprop="text">
+				{{ .a | markdownify }}
+			</span>
+		</div>
+	</details>
+	{{ end }}
+</div>

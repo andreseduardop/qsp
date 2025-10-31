@@ -1,0 +1,11 @@
+{{ $image := $.Page.Resources.Get .Destination }}
+<!-- El contenido pasado como 'title' en el markdown de la imagen, es trasnferido aquí al atributo class -->
+<p class="sc_md_image text-center">
+  <img 
+    class="{{ .Title }}" 
+    src="{{ $image.RelPermalink }}" 
+    alt="{{ .Text }}" 
+    width="{{ $image.Width }}" 
+    height="{{ $image.Height }}" 
+    loading="lazy">
+</p>

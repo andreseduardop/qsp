@@ -1,0 +1,36 @@
+<!-- Get variables from short code -->
+{{ $alt := .Get "alt" }}
+{{ $title := .Get "title" }}
+{{ $imageSvg := .Get "svg" }}
+{{ $imageWebp := .Get "webp" }}
+{{ $scale := .Get "scale" | default 1.0 }}
+{{ $shorcodeCall := .Position }}
+<!-- Go Processing variables -->
+{{ with $imageWebp }}
+  {{ $imageWebp = $.Page.Resources.GetMatch . }}
+{{ else }}
+  {{ errorf "The short code <picture> expects the 'src' parameter. The incomplete call to the <picture> shortcode was made from the file: %s" $shorcodeCall }}
+{{ end }}
+{{ with $imageSvg }}
+  {{ $imageSvg = $.Page.Resources.GetMatch . }}
+{{ else }}
+  {{ errorf "The short code <picture> expects the 'webp' parameter. The incomplete call to the <picture> shortcode was made from the file: %s" $shorcodeCall }}
+{{ end }}
+{{ with $alt }}{{ else }}
+  {{ $alt = print $imageSvg.Name }}
+{{ end }}
+<!-- Calculate scaled width and height -->
+{{ $scaledWidth := mul $imageWebp.Width $scale }}
+{{ $scaledHeight := mul $imageWebp.Height $scale }}
+<!-- Generating HTML -->
+<div class="text-center my-3">
+  <picture>
+    <source srcset="{{ $imageSvg.RelPermalink }}" type="image/svg+xml">
+    <img src="{{ $imageWebp.RelPermalink }}"
+      width="{{ $scaledWidth }}"
+      height="{{ $scaledHeight }}"
+      alt="{{ $alt }}"
+      {{ with $title }}title="{{ . }}"{{ end }}
+      loading="lazy">
+  </picture>
+</div>

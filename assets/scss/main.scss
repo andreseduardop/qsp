@@ -1,0 +1,891 @@
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../bootstrap/scss/_functions";
+// Icons
+@import "./icons";
+
+// Import the Sass files as usual
+// 2. Include an variable overrides here
+
+
+// $body-color:      #5054ef;
+$font-size-root:    15px;
+$font-size-base:  1rem;
+$h1-font-size:  1.5rem;
+$h2-font-size:  $font-size-base * 1.4;
+$h3-font-size:  $font-size-base * 1.3;
+$h4-font-size:  $font-size-base * 1.2;
+$h5-font-size:  $font-size-base * 1.1;
+$h6-font-size:  $font-size-base;
+$headings-font-family:    "Space Mono",  system-ui, sans-serif;
+$font-family-sans-serif:  "Space Mono", Roboto, Helvetica, Arial, sans-serif;
+// Fuentes disponibles: 
+// Miracode
+// Courier Prime
+// Roboto Slab
+// Geist Mono
+// Open Sans
+// Inter
+
+$font-weight-lighter:         lighter;
+$font-weight-light:           300;
+$font-weight-normal:          400;
+$font-weight-medium:          500;
+$font-weight-semibold:        600;
+$font-weight-bold:            600;
+$font-weight-bolder:          600;
+
+
+// $zindex-dropdown:                   1000;
+// $zindex-sticky:                     1020;
+// $zindex-fixed:                      1030;
+// $zindex-offcanvas-backdrop:         1040;
+// $zindex-offcanvas:                  1045;
+// $zindex-modal-backdrop:             1050;
+// $zindex-modal:                      1055;
+// $zindex-popover:                    1070;
+// $zindex-tooltip:                    1080;
+// $zindex-toast:                      1090;
+// $zindex-offcanvas-backdrop:         1027;
+// $zindex-offcanvas:                  1028;
+
+// Color system
+$white:    #fff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black:    #000;
+
+$blue:    #0d6efd;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #d63384;
+$red:     #dc3545;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #198754;
+$teal:    #20c997;
+$cyan:    #0dcaf0;
+
+// App colors
+$blue-v0:           #3e43f0;  // Blue sketchpad-v0
+$app-blue:          #3C39CC;  // Blue 
+$app-pink:          #FF3392;  // Deep pink
+$app-white:         #f8f9fa;  // White 
+$app-gray-100:      #f2f6fd;  // Lavender
+$app-gray-200:      #edf3fc;  // Lavender 
+$app-gray-300:      #dce7f9;  // Lavender 
+$highlight:         #f4ebdd;  // Marfil
+// $highlight-subtle:  #fcfbf7;  // Marfil
+$highlight-subtle:  #FAF7EB;  // Marfil claro
+
+// Theme colors:
+$primary:       $app-blue;
+$secondary:     $orange;
+$tertiary:      $orange;  // Required
+$success:       $green;   // Required
+$info:          $yellow;
+$warning:       $purple;
+$danger:        $red;     // Required
+$light:         $gray-300;
+$dark:          $gray-600;
+$app-bg:        $app-gray-300;
+$app-bg-subtle: $app-gray-100;
+
+// Personalización de variables: 
+
+$enable-dark-mode:          false !default;
+
+$body-color:            $app-blue !default;
+$body-color-subtle-3:   tint-color($app-blue, 30%) !default;
+$body-color-subtle-5:   tint-color($app-blue, 50%) !default;
+$body-color-subtle-7:   tint-color($app-blue, 70%) !default;
+$body-bg:               $app-bg !default;
+
+// Some modal variables
+// $modal-backdrop-bg:                 $black;
+$modal-backdrop-opacity:            .3;
+
+// Style anchor elements.
+$link-color:                        $primary;
+$link-decoration:                   none;
+$link-hover-color:                  $primary;
+$link-hover-decoration:             underline;
+
+// Borders
+$border-color:                      $body-color !default;
+
+// Tabs (color of navigation links in menus)
+$nav-link-color:                    $body-color;
+$nav-link-hover-color:              $body-color;
+$nav-tabs-link-active-color:        $body-color;
+
+// Nav buttons (pills)
+$nav-pills-link-active-bg:          $gray-600;
+
+// Backdrop
+$modal-backdrop-bg:                 $app-bg;
+$modal-backdrop-opacity:            .8;
+
+
+// 3. Include remainder of required Bootstrap stylesheets
+
+@import "../bootstrap/scss/_variables";
+@import "../bootstrap/scss/_variables-dark";
+
+
+// 4. Include any default map overrides here
+
+// Modify map color
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,  // Required
+  "success":    $success,  // Required
+  // "info":       $info,
+  // "warning":    $warning,
+  "danger":     $danger,  // Required
+  "light":      $light,
+  "dark":       $dark,
+);
+
+// Create map with my own colors
+$shower-colors: (
+  "tertiary":   $tertiary,
+);
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $shower-colors);
+$theme-colors: map-remove($theme-colors, "info", "warning");
+ 
+
+// 5. Include remainder of required parts
+
+@import "../bootstrap/scss/_maps";
+@import "../bootstrap/scss/_mixins";
+@import "../bootstrap/scss/root";
+
+
+// 6. Optionally include any other parts as needed
+
+@import "../bootstrap/scss/utilities";
+@import "../bootstrap/scss/reboot";
+@import "../bootstrap/scss/type";
+@import "../bootstrap/scss/images";
+@import "../bootstrap/scss/containers";
+@import "../bootstrap/scss/grid";
+@import "../bootstrap/scss/tables";
+@import "../bootstrap/scss/forms";
+@import "../bootstrap/scss/buttons";
+@import "../bootstrap/scss/transitions";
+@import "../bootstrap/scss/dropdown";
+@import "../bootstrap/scss/button-group";
+@import "../bootstrap/scss/nav";
+@import "../bootstrap/scss/navbar";
+@import "../bootstrap/scss/card";
+@import "../bootstrap/scss/accordion";
+@import "../bootstrap/scss/breadcrumb";
+@import "../bootstrap/scss/pagination";
+@import "../bootstrap/scss/badge";
+@import "../bootstrap/scss/alert";
+@import "../bootstrap/scss/progress";
+@import "../bootstrap/scss/list-group";
+@import "../bootstrap/scss/close";  // cierra modales, offcanvas, etc.
+@import "../bootstrap/scss/toasts";
+@import "../bootstrap/scss/modal";
+@import "../bootstrap/scss/tooltip";
+@import "../bootstrap/scss/popover";
+@import "../bootstrap/scss/carousel";
+@import "../bootstrap/scss/spinners";
+@import "../bootstrap/scss/offcanvas";
+@import "../bootstrap/scss/helpers";  // se usa para stretched links
+@import "../bootstrap/scss/placeholders";
+
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+
+@import "../bootstrap/scss/utilities/api";  // se usa para colors, display, align, text-, etc
+
+// 8. Add additional custom code here
+
+
+/* FONTS */
+/* space-mono-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/space-mono-v17-latin-regular.woff2') format('woff2');
+}
+/* space-mono-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/space-mono-v17-latin-700.woff2') format('woff2');
+}
+/* geist-mono-regular - latin */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/geist-mono-v4-latin-regular.woff2') format('woff2'); 
+}
+/* geist-mono-600 - latin */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/geist-mono-v4-latin-600.woff2') format('woff2');
+}
+//
+/*! purgecss start ignore */
+//
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  height: stretch;
+}
+// Color del texto seleccioando
+::selection {
+  background-color: tint-color($body-color, 70%); /* Color de fondo */
+  color: $body-color; /* Color del texto */
+}
+body {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  height: 100%;
+  margin: 0;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  text-rendering: optimizeLegibility;
+  width: 100%;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  // Prevenir que la barra del navegador tape el nav-bar de la app
+  // min-height: 100vh; /* Fallback for non-WebKit browsers */
+  // min-height: -webkit-fill-available; /* For WebKit browsers */
+  height: stretch; /* Modern, standardized approach */
+}
+// Scroll hasta encabezados
+h1, h2, h3, h4, h5, h6 {
+  scroll-margin-top: 2.5em;
+  font-weight: 600;
+  // letter-spacing: .25px;
+}
+// Hipervínculos
+a {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  font-weight: 600;
+}
+a.external::after {
+  content: "\2002\f1c5";
+  display: inline-block;
+  font-family: icons !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: -.125em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+// Entradas de texto
+input {
+  color: $body-color !important;
+}
+input:-internal-autofill-selected {
+  color: $body-color !important;
+}
+// Extender clases de Bootstrap 
+.app-fs-7 {
+  font-size: 0.75rem;
+}
+svg.bi {
+    display: inline-block;
+    vertical-align: -.25em;
+    fill: currentcolor;
+}
+// Columnas para carrusel en Planner
+// La acumulación de cards no llena el 100%
+// para generar expectativa, revelación parcial.
+@media (max-width: 575px) {
+  .app-col-partial {
+    flex: 0 0 auto;
+    width: 30%;
+  }
+}
+@media (min-width: 576px) {
+  .app-col-partial {
+    flex: 0 0 auto;
+    width: 22%;
+  }
+}
+
+// HEADER
+.app-title {
+  padding: 0px;
+  margin: 0px;
+}
+// .app-title::after {
+//   animation: blink-animation 1.5s infinite;
+//   color: $body-color-subtle-3;
+//   content: '\2006»';
+//   font-family: 'Geist Mono' !important;
+//   font-weight: 400;
+// }
+
+// COMPONENT CONTAINER (start)
+.app-card {
+  border: 1px solid $body-color;
+  // border-radius: 4px;
+  box-shadow: 4px 4px $body-color-subtle-5;
+  padding: 1rem;
+}
+.app-card, .app-card * {
+  background-color: $app-bg-subtle;
+}
+.app-card h2 {
+  // text-transform: uppercase;
+  font-size: 1.1rem;
+  // font-size: .86667rem;
+  // font-family: 'Courier Prime';
+  // font-weight: 700;
+  margin-top: -10px;
+  margin-left: -8px;
+  user-select: none;
+  // border-bottom: 1px dashed $body-color;
+}
+.app-card h2:not(.icon-none)::after {
+  color: $body-color-subtle-3;
+  content: '\2006»';
+  font-family: 'Geist Mono' !important;
+  font-weight: 400;
+}
+// COMPONENT CONTAINER (end)
+
+// SIDEBAR (start)
+.offcanvas-start {
+  transition: transform 400ms cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+.app-sidebar {
+  height: 95dvh;  
+}
+// SIDEBAR (end)
+
+// APP COMPONENT ELEMENTS (start)
+.app-card textarea {
+  resize: none;
+  overflow: hidden;
+  height: auto;
+  padding: 0px 4px;
+  align-content: center;
+  // vertical-align: middle;
+}
+
+// Ajustes generales
+/* Resaltado cuando el mouse pase por encima */
+ul li:not(:last-child).list-group-item:hover,
+ol li:not(:last-child).list-group-item:hover {
+  background-color: $highlight-subtle;
+  & a, 
+  & button,
+  & div,
+  & h3,
+  & i,
+  & input[type="time"],
+  & label,
+  & p,
+  & span {
+    background-color: $highlight-subtle;
+  }
+}
+.app-timeline li:last-child:hover {
+  background-color: $highlight-subtle;
+  & h3,
+  & p {
+    background-color: $highlight-subtle;
+  }
+}
+// Cursor pointer
+ul label,
+ol label,
+ul p,
+ul h3,
+.type-checkbox .card label {
+  cursor: text;
+}
+// Checklists
+.type-checkbox {
+  background-color: transparent;
+  border-radius: 0px;
+  transition-duration: .8s;
+}
+// Resaltado cuando checked
+.type-checkbox li:has(input[type="checkbox"]:checked),
+.type-checkbox .card:has(input[type="checkbox"]:checked) {
+  background-color: $app-bg;
+  & div,
+  & button,
+  & i,
+  & label,
+  & a,
+  & span {
+    background-color: $app-bg;
+  }
+}
+// Form check (checkbox + label)
+// Se debe hacer ajuste para centrar verticalmente (¬_¬)
+.type-checkbox .form-check {
+  margin-bottom: 0rem;
+}
+// Checkbox round
+.type-checkbox input[type="checkbox"] {
+  background-color: transparent;
+  margin-left: -1.6em;
+  cursor: pointer;
+  border-radius: 50%;
+  bottom: .15em;
+  height: 1.2em;
+  width: 1.2em;
+  position: relative;
+}
+// Checkbox squared
+input.squarebox[type="checkbox"] {
+  border-radius: 0%;
+}
+// Checkbox squared
+input.squircle[type="checkbox"] {
+  border-radius: 50% 50% 0% 0%;
+}
+.type-checkbox input[type="checkbox"]:focus {
+  border-color: $body-color;
+  outline: 0;
+  box-shadow: none;  
+}
+.type-checkbox input[type="checkbox"]:checked {
+  color: $app-bg-subtle;
+  background-color: $body-color;
+}
+// Label
+.type-checkbox input[type="checkbox"] + label {
+  padding-left: 8px;
+  padding-top: 1.5px;
+}
+.type-checkbox input[type="checkbox"]:checked+label {
+  color: $body-color-subtle-3;
+}
+// Input text
+.type-checkbox textarea, 
+.type-checkbox input[type="text"] {
+  align-content: center;
+}
+// Stepslist component
+.type-stepslist li::before {
+  min-width: 1.5em;
+}
+// Shedule component
+input[type="time"] {
+  width: auto;
+}
+li[data-role="end"]:first-child {
+  display: none !important;
+}
+li[data-role="end"]:first-child+li {
+  border-top: solid 1px;
+}
+// Supplies component
+.type-supplies .card {
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
+}
+.type-supplies .card-body {
+  align-items: center;
+  // aspect-ratio: 2 / 1;
+  border-color: $body-color;
+  // border-radius: .375em;
+  border: 1px solid $body-color;
+  box-shadow: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  // align-content: center;
+  // justify-content: center;
+};
+.type-supplies .card input[type="checkbox"] {
+  height: 1.3em;
+  width: 1.3em;
+}
+.type-supplies .card label {
+  // text-wrap: anywhere;
+  word-break: break-word;
+}
+// Supplies component
+.type-team .card {
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
+}
+.type-team .card-body {
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  border-color: $body-color;
+  border-radius: .5em;
+  border: 1px solid $body-color;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  // align-content: center;
+  justify-content: space-evenly;
+};
+.type-team .card i::before {
+  font-size: 50px;
+}
+.type-team .card label {
+  // text-wrap: anywhere;
+  word-break: break-word;
+}
+// Buttons
+// Edit 
+.app-btn-edit {
+  border-color: transparent;
+  border: 0px;
+  color: $body-color-subtle-5;
+  margin: 0px 0px 0px 12px;
+  padding: 0px;
+}
+// Move task
+button.app-btn-move {
+  border-color: transparent;
+  border: 0px;
+  color: $body-color;
+  cursor: grab !important;
+  padding: 0px 0px 0px 16px;
+  visibility: hidden;
+}
+button.app-btn-move:active {
+  cursor: grabbing !important; 
+}
+.card:hover .app-btn-move,
+li:hover .app-btn-move {
+  visibility: visible;
+}
+// Add new task
+.app-btn-add {
+  background-color: $app-bg-subtle;
+  border-color: transparent;
+  border: 0px;
+  color: $primary;
+  margin: 0px 3px 0px 10px;
+  outline: 0;
+  padding: 0px;
+}
+.type-checkbox button.app-btn-add:active {
+  background-color: $app-bg-subtle;
+  border-color: transparent;
+  border: 0px;
+}
+// 
+// TIMELINE
+ul.app-timeline {
+  list-style-type: none;
+  position: relative;
+}
+ul.app-timeline:before {
+  content: " ";
+  background: $primary;
+  display: inline-block;
+  position: absolute;
+  left: 29px;
+  width: 2px;
+  height: 100%;
+  z-index: 400;
+}
+ul.app-timeline > li {
+  margin: 20px 0;
+  padding-left: 20px;
+}
+ul.app-timeline > li:before {
+  content: " ";
+  background: $body-color-subtle-7;
+  display: inline-block;
+  position: absolute !important;
+  border-radius: 50%;
+  border: 3px solid $primary;
+  left: -10px;
+  width: 20px;
+  height: 20px;
+  z-index: 400;
+  cursor: grab;
+}
+ul.app-timeline > li:active {
+  cursor: grabbing !important;
+}
+// TERMINAL (AI GENERATOR)
+.app-ai-generator h2 {
+  margin-bottom: 0px;
+}
+.app-ai-generator h2[aria-expanded="false"] span.icon-not-collapsed {
+  display: none;
+}
+.app-ai-generator h2[aria-expanded="true"] span.icon-collapsed {
+  display: none;
+}
+.app-ai-generator:has(div.collapsing ) span.icon-not-collapsed,
+.app-ai-generator:has(div.collapsing ) span.icon-collapsed {
+  display: none;
+}
+// AI GENERATOR
+// Atributos de la la lista
+/* Oculta los marcadores por defecto e inicia el contador */
+.app-ai-generator ol { 
+  list-style-type: none;
+  counter-reset: custom-counter; // el nombre es configurable
+}
+/* Incrementa el contador por cada elemento li */
+.app-ai-generator ol li { 
+  counter-increment: custom-counter;
+}
+/* Muestra los corchetes y el número antes del contenido del li */
+.app-ai-generator ol li::before { 
+  content: "[" counter(custom-counter) "] ";
+}
+.app-ai-generator ol li:has(button.disabled)::before { 
+  opacity: 0.65;
+}
+/*
+  Selecciona el elemento <div> (el elemento hermano que sigue)
+  siempre que el elemento <ol> que lo precede directamente o indirectamente
+  contenga un elemento <button> con el atributo [disabled]
+*/
+#ai-generator-screen-1:has(button.disabled) header,
+#ai-generator-screen-1:has(button.disabled) div.ocultar,  
+.app-ai-generator ol:has(button.disabled) {
+  display: none;
+  // visibility: hidden;
+  // opacity: 0.75;
+}
+// Elemento <input> (entrada de texto)
+.app-ai-generator input::placeholder {
+  color: $body-color-subtle-3;
+}
+.app-ai-generator textarea,
+.app-ai-generator input {
+  border: none;
+  outline: none;
+  padding-left: 4px;
+}
+.app-ai-generator textarea.animated,
+.app-ai-generator input.animated {
+  animation: blink-animation 1.5s infinite;
+}
+.app-ai-generator textarea:focus-visible::placeholder,
+.app-ai-generator input:focus-visible::placeholder {
+  color: transparent;
+  content: none;
+}
+.app-ai-generator textarea:focus-visible, 
+.app-ai-generator input:focus-visible {
+  animation: none;
+  border: none;
+}
+// Listas de opciones
+.app-ai-generator ul li::marker { 
+  content: '- ';
+}
+// Textarea no resizeable manualmente
+.app-ai-generator textarea { 
+  resize: none;
+}
+
+// IMAGES (start)
+main img {
+  max-width: 100%;
+  height: auto;
+}
+// IMAGES (end)
+
+// UTILITIES
+// Scroll bar for wider screens
+@media(min-width: 576px) {
+
+  .app-scroll-enable {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-color: $body-color-subtle-5 $app-bg-subtle;
+    scrollbar-width: thin;
+  }
+}
+// Blinking animation
+@keyframes blink-animation {
+  0% {
+    opacity: 1; /* Fully visible at the start */
+  }
+  50% {
+    opacity: 0; /* Fully transparent at 50% through the animation */
+  }
+  100% {
+    opacity: 1; /* Fully visible again at the end */
+  }
+}
+// Blinking animation
+@keyframes sparkle-animation {
+  0% {
+    opacity: 1; /* Fully visible at the start */
+  }
+  50% {
+    opacity: .5; /* Fully transparent at 50% through the animation */
+  }
+  100% {
+    opacity: 1; /* Fully visible again at the end */
+  }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.app-icono::after {
+  animation: cubic-bezier(0.37, 0, 0.63, 1) blink-animation 1.5s infinite;
+  content: '\2006»';
+  font-family: 'Geist Mono' !important;
+}
+.app-icono-static::after {
+  content: '\2006»';
+  font-family: 'Geist Mono' !important;
+}
+// helpers
+/* Guías de reorden (evita conflictos con .list-group-item de Bootstrap) */
+.app-guide-top { 
+  box-shadow: inset 0 3px 0 $body-color-subtle-5; 
+  // border-top-color: $body-color-subtle-5;
+}
+.app-guide-bottom {
+  box-shadow: inset 0 -3px 0 $body-color-subtle-5;
+  // border-bottom-color: $body-color-subtle-5;
+}
+/* Esto apunta al ícono de reloj/calendario nativo en navegadores WebKit 
+  (Chrome, Safari, Edge, Opera) y lo oculta.
+*/
+.no-time-icon::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none; /* Para compatibilidad con versiones antiguas */
+}
+// helpers para altura
+.app-dvh-100 {
+  min-height: 100dvh;   /* Chrome/Edge/Safari modernos */
+}
+.app-vh-75 {
+  height: 75vh;   /* Chrome/Edge/Safari modernos */
+}
+// Repite caracter = en toda la línea
+.linea-caracter {
+    /* Establecer el ancho del contenedor */
+    width: 100%; 
+    /* Altura para que el contenido sea visible */
+    height: 1em; 
+    margin: 1em 0em;
+    overflow: hidden; /* Ocultar el exceso si el carácter no encaja */
+}
+.linea-caracter::before {
+    content: "==============================================================================================================================";
+}
+
+// Backdrop
+.app-backdrop {
+  --bs-backdrop-zindex: 1050;
+  align-items: flex-start;
+  animation: fadeIn .5s ease-in forwards; /* Nombre, duración, función de tiempo, y forwards */
+  background-color: rgba($app-bg, 0.8);
+  display: flex;
+  flex-direction: column;
+  font-size: 3rem;
+  font-weight: 600;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  padding: 2rem;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: var(--bs-backdrop-zindex);
+}
+@media(min-width: 576px) { 
+  .app-backdrop {
+  padding: 5rem 10rem;
+  }
+}
+// Agrega chevrones al título
+.app-backdrop span.backdrop-title:after {
+  animation: cubic-bezier(0.37, 0, 0.63, 1) blink-animation 1.5s infinite;
+  content: '\2006»';
+  font-family: 'Geist Mono' !important;
+}
+// animación de opacidad
+// 
+/* estilos base compartidos para los textos */
+.app-backdrop span {
+  display: block;       /* asegura que los <span> se apilen verticalmente */
+  text-align: left;
+  line-height: 1.5em;
+  will-change: opacity; /* sugiere optimización al navegador */
+}
+
+/* título con animación inmediata */
+.app-backdrop span.backdrop-title {
+  /* opcional: usa tamaños fluidos para mejor respuesta */
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  opacity: 0;                /* garantiza estado inicial consistente */
+  animation: fadeIn 1s ease-out forwards;
+}
+
+/* subtítulo con retardo para efecto escalonado */
+.app-backdrop span.backdrop-subtitle {
+  opacity: 0;                /* estado base - invisible */
+  animation: fadeIn 1.5s ease-out .75s forwards;
+  font-size: clamp(1rem, 3vw, 2rem);
+  font-weight: 400;
+}
+/* Comentario: aplica fadeOut cuando se agrega la clase de estado */
+.app-backdrop .backdrop-subtitle.is-fading-out {
+  animation: fadeOut 1s ease-in forwards;
+}
+
+/* respeta preferencias de reducción de movimiento del usuario */
+@media (prefers-reduced-motion: reduce) {
+  .app-backdrop span.backdrop-title,
+  .app-backdrop span.backdrop-subtitle {
+    animation: none;         /* desactiva animación */
+    opacity: 1;              /* asegura visibilidad inmediata */
+  }
+  .app-backdrop .backdrop-subtitle.is-fading-out {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+
+/*! purgecss end ignore */
+// 
+// Para un elemento específico: 
+/*! purgecss ignore current */

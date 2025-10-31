@@ -1,0 +1,48 @@
+{{ define "main" }}
+<div class="container p-0">
+  <!--  Quizás se deba quitar overflow-y-hidden para que funcione sticky -->
+  <div class="row g-0 overflow-y-hidden justify-content-center mx-0 vh-100">
+    {{ partial "sidebar" . }}
+    <main id="app-main" class="col col-sm-10 col-md-7 col-lg-9 mb-3 p-0">
+      <header class="user-select-none p-3 pe-lg-0">
+        <div class="app-card col p-3 py-1">
+          <div class="navbar align-items-center">
+            <a class="btn d-block d-md-none ps-0" role="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu" aria-label="Side menu button">
+              <i class="bi bi-layout-sidebar fs-1"></i>
+            </a>
+            <h1 id="app-title" class="app-icono fs-3 my-0 me-auto">quick smart plan&ensp;<span class="fw-normal fs-4"></span></h1>
+          </div>
+        </div>
+      </header>
+      <section id="section-new-plan" class="app-scroll-enable overflow-y-auto mb-3 p-3 d-none">
+        <div class="row g-4">
+          <div class="col-12">
+            <div id="app-container-0" class="row g-4">
+              {{ partial "app/ai-generator" . }}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="section-active-plann" class="app-scroll-enable overflow-y-auto p-3 vh-100 d-none">
+        <div class="row g-4">
+          <div class="col-12 col-lg-6">
+            <div id="app-container-1" class="row g-4">
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div id="app-container-2" class="row g-4">
+            </div>
+          </div>
+          <div class="row my-5 py-5"><br>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<!-- <div class="app-backdrop">
+  <span class="backdrop-title">Creating an interface for you</span>
+  <span class="backdrop-subtitle">Processing... Local AI is selecting tools</span>
+</div> -->
+{{ end }}
+

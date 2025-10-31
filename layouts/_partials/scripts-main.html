@@ -1,0 +1,35 @@
+<!-- Options for build -->
+{{ $buildOptions := (dict 
+  "bundle" true
+  "format" "iife"
+  "targetPath" "js/main.min.js" 
+  "minify" true) }}
+{{ if hugo.IsServer }}
+  {{ $buildOptions = (dict
+    "bundle" true
+    "format" "iife"
+    "targetPath" "js/main.min.js"
+    "minify" false
+    "sourceMap" "inline") }}
+{{ end }}
+{{- $script := resources.Get "js/main.js" | js.Build $buildOptions | resources.Fingerprint "sha384" -}}
+<script src='{{ $script.RelPermalink  }}' integrity='{{ $script.Data.Integrity }}' defer></script>
+
+<!-- Get Bootstrap JS -->
+{{ $bootstrapJs := resources.Get "bootstrap/dist/js/bootstrap.min.js" | resources.Fingerprint "sha384" }}
+
+{{ with $bootstrapJs }}
+  {{$opts := dict
+    "minify" (not hugo.IsDevelopment)
+    "targetPath" "js/styles.js"
+  }}
+  {{ with . | js.Build $opts }}
+    {{ if hugo.IsDevelopment }}
+      <script src="{{ .RelPermalink }}"></script>
+    {{ else }}
+      {{ with . | fingerprint }}
+        <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

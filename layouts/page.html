@@ -1,0 +1,17 @@
+{{ define "main" }}
+<main class="container my-5">
+  <h1 class="py-5 fw-light text-center">{{ .Title }}</h1>
+  {{ if .Params.toc }}
+    <nav class="toc" aria-labelledby="toc-heading">
+    <h2 id="toc-heading">{{ T "table_of_contents" }}</h2>
+    {{.TableOfContents}}
+    </nav>
+  {{ end }}
+  {{ .Content }}
+  <!-- Espacio al final y nota de plantilla. -->
+  <div class="small text-light bg-light">
+    <!-- Layout en layouts/_default/single.html -->
+  </div>
+  <p class="my-5">&nbsp;</p>
+</main>
+{{ end }}

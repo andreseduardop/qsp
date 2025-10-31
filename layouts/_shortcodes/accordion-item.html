@@ -1,0 +1,19 @@
+<!-- Para que funcione, el contenido de cada item debe ser diferente. -->
+<!-- Si el contenido es idéntico entre dos ítems -->
+<!-- se producirán errores en el funcionamiento. -->
+{{ $title := .Get "title" }}
+{{ $titleId := $title | md5 }}
+{{ $collapsed := .Get "collapsed" }}
+{{ $contentId := .Inner | md5 }}
+<div class="accordion-item">
+  <h2 class="accordion-header mt-0" id="title-{{ $titleId }}">
+    <button class='accordion-button fs-4{{ if $collapsed }}{{ print " collapsed"}}{{ end }}' type="button" data-bs-toggle="collapse" data-bs-target="#content-{{ $contentId }}" aria-expanded="{{ not $collapsed }}" aria-controls="content-{{ $contentId }}">
+      {{- $title | markdownify -}}
+    </button>
+  </h2>
+  <div class='accordion-collapse collapse{{ if (not $collapsed) }}{{ print " show"}}{{ end }}' id="content-{{ $contentId }}" aria-labelledby="title-{{ $titleId }}" data-bs-parent='#accordion-{{ .Parent.Ordinal }}'>
+    <div class="accordion-body">
+      {{ .Inner | .Page.RenderString }}
+    </div>
+  </div>
+</div>

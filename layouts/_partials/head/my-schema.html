@@ -1,0 +1,66 @@
+<script type="application/ld+json">
+{{- if .IsHome }}
+[{
+  "@context" : "https://schema.org",
+  "@type" : "WebSite",
+  "name" : "{{ .Title }}",
+  "alternateName": "{{ .Site.Title }}",
+  "url" : "{{ .Permalink }}"
+},
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{ .Site.Title }}",
+  "url": "{{ .Permalink }}",
+  "logo": {
+    "@type": "ImageObject",
+    "url": {{ "logo.svg" | absURL }}
+    },
+  "sameAs": [
+    {{- with .Site.Params.facebook -}}"https://www.facebook.com/{{ . -}}",{{ end }}
+    {{- with .Site.Params.twitter }}"https://twitter.com/{{ . -}}",{{ end }}
+    {{- with .Site.Params.linkedin }}"https://www.linkedin.com/in/{{ . -}}"{{ end -}}
+    ]
+}]
+{{- else }}
+{ {{ $images := $.Resources.ByType "image" -}}
+  {{ $carousel := $.Resources.Match "thumbnails-carousel/*.webp" -}}
+  {{- $imagesInCarousel := slice -}}
+  {{- $featuredImage := $images.GetMatch "*feature*" -}}
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ .Title | plainify }},
+  {{- with $carousel -}}
+    {{ range . }}
+      {{- $imagesInCarousel = append .Permalink $imagesInCarousel }}
+    {{- end }}
+  "image": {{ $imagesInCarousel }},
+  {{ else }}
+    {{- with $featuredImage }}
+      "image": {{ $featuredImage.Permalink -}},
+    {{- else -}}
+      {{ with $.Site.Params.Images }}
+      "image": {{ index . 0 | absURL -}},
+    {{- end -}}{{- end }}
+  {{ end -}}
+  "datePublished": {{ .PublishDate }},
+  "dateModified": {{ .Lastmod }},
+  "author": {
+    "@type": "Organization",
+    "name": {{ .Site.Params.author }},
+    "url": {{ .Site.BaseURL }}
+  },
+  "mainEntityOfPage": { "@type": "WebPage" },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ .Site.Title }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ "logo.svg" | absURL }}
+      }
+  },
+  "description": {{ .Params.description | plainify | safeHTML }},
+  "keywords": [{{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}]
+}
+{{ end -}}
+</script>

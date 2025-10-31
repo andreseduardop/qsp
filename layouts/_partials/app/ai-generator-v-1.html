@@ -1,0 +1,56 @@
+<div class="col-12">
+  <div class="app-card col app-scroll-enable overflow-y-auto app-vh-75 d-none">
+    <div class="app-ai-generator">
+      <h2 class="icon-none accordion-header d-none" type="button" data-bs-toggle="collapse" data-bs-target="#ai-generator-container" aria-expanded="true" aria-controls="ai-generator-container">
+        <span>ai-generator</span>
+        <span class="icon-collapsed float-end" aria-expanded="true"><i class="bi bi-chevron-down"></i></span>
+        <span class="icon-not-collapsed float-end" aria-expanded="false"><i class="bi bi-chevron-up"></i></span>
+      </h2>
+      <div id="ai-generator-screen-1">
+        <div class="fw-semibold">
+          <div class="linea-caracter"></div>
+          <h3 class="fs-1 fw-semibold text-center">What do you want to plan today?</h3>
+          <div class="linea-caracter"></div>
+        </div>
+        <ol class="fw-normal my-4">
+          <li class="fs-4 m-3"><a class="fw-normal" role="button" data-event-type="event">An event</a></li>
+          <li class="fs-4 m-3"><a class="fw-normal" role="button" data-event-type="project">A project </a></li>
+          <li class="fs-4 m-3"><a class="fw-normal" role="button" data-event-type="trip">A trip</a></li>
+          <li class="fs-4 m-3"><a class="fw-normal" role="button" data-event-type="class">A class or lecture</a></li>
+          <li class="fs-4 m-3"><a class="fw-normal" role="button" data-event-type="else">Something else</a></li>
+        </ol>
+        <template id="ai-generator-input-template">
+          <div class="my-5">
+            <p class="fs-4">Select an option.</p>
+            <p class="fs-4">
+              <span class="app-icono-static fw-semibold">qsp</span>
+              <input class="animated" type="text" name="ai-generator input" placeholder="▮">
+            </p>
+          </div>
+        </template>
+        <template id="ai-generator-options-template">
+          <div class="my-5">
+            <p class="fs-4">
+                <span class="fw-semibold">
+                    Could you tell me more about the event you're planning?
+                </span><br>
+                <span>Some ideas:</span>
+                <ul class="lh-base my-3">
+                    <li class="mx-4">Type of event (e.g., conference, party, meeting, wedding)</li>
+                    <li class="mx-4">Date and location</li>
+                    <li class="mx-4">Main purpose or goal</li>
+                    <li class="mx-4">Planned activities</li>
+                    <li class="mx-4">Theme or style</li>
+                    <li class="mx-4">Food and beverage needs</li>
+                </ul>
+            </p>
+            <p class="fs-4">
+              <span class="app-icono-static fw-semibold">qsp</span>
+              <input class="animated" type="text" name="ai-generator input" placeholder="▮">
+            </p>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</div>

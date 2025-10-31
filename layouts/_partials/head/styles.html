@@ -1,0 +1,23 @@
+<!-- SCSS to CSS -->
+{{ $scss := resources.Get "scss/main.scss" }}
+{{ $optionsScss := (dict 
+  "transpiler" "dartsass"
+  "targetPath" "css/main.css" 
+  "outputStyle" "compressed" 
+  "enableSourceMap" false) 
+}}
+{{ $css := $scss | css.Sass $optionsScss }}
+
+{{ $optionsPost := (dict 
+  "use" "autoprefixer"
+  "noMap" "true") }}
+
+{{ with $css }}
+  {{ if hugo.IsDevelopment }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{ else }}
+    {{ with . | postCSS | minify | fingerprint | resources.PostProcess }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+    {{ end }}
+  {{ end }}
+{{ end }}

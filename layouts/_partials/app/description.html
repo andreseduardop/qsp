@@ -1,0 +1,31 @@
+<div class="col-12">
+  <div class="app-card col">
+    <h2>description</h2>
+    <div class="row d-block" id="description-container" data-display-class="d-block" aria-hidden="false">
+      <article class="col-12 mb-4" data-role="article">Description text.</article>
+      <aside class="small text-center text-primary text-opacity-75">Generated with local AI.<br>Editable by you.</aside>
+    </div>
+    <div class="d-flex flex-column d-none" id="description-editor" data-role="inline-panel" data-display-class="d-flex" aria-hidden="false">
+      <textarea class="form-control" data-role="inline-editor" aria-label="Edit description text" name="inline-editor" rows="1" style="height: 0px; overflow: hidden;">
+      </textarea>
+      <div class="d-flex flex-column mt-3 small">
+        <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="save">
+          <span>Save</span>
+          <span class="text-muted">[Enter]</span>
+        </a>
+        <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="discard">
+          <span>Discard</span>
+          <span class="text-muted">[Esc]</span>
+        </a>
+        <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-spelling">
+          <span class="app-icono">Fix spelling</span>
+          <span class="text-muted">[Shift+F8]</span>
+        </a>
+        <a class="text-decoration-none fw-bold mb-2 d-flex justify-content-between" href="#" data-action="ai-improve">
+          <span class="app-icono">Improve writing</span>
+          <span class="text-muted">[Shift+F9]</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

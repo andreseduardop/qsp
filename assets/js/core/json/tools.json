@@ -1,0 +1,79 @@
+{
+  "id": "id",
+  "date": "date",
+  "title": "title",
+  "state": "active",
+  "description": "Event description",
+  "components": [
+    {
+      "name": "ai-generator",
+      "title": "AI Generator",
+      "position": 1,
+      "state": "unmounted",
+      "content": {}
+    },
+    {
+      "name": "description",
+      "title": "Description",
+      "position": 2,
+      "state": "unmounted",
+      "content": {}
+    },
+    {
+      "name": "dashboard",
+      "title": "Dashboard",
+      "position": 3,
+      "state": "unmounted",
+      "content": {}
+    },
+    {
+      "name": "schedule",
+      "title": "Schedule",
+      "position": 4,
+      "state": "unmounted",
+      "content": []
+    },
+    {
+      "name": "checklist",
+      "title": "Checklist",
+      "position": 5,
+      "state": "unmounted",
+      "content": []
+    },
+    {
+      "name": "stepslist",
+      "title": "Steps",
+      "position": 6,
+      "state": "unmounted",
+      "content": []
+    },
+    {
+      "name": "teamlist",
+      "title": "Team & Roles",
+      "position": 7,
+      "state": "unmounted",
+      "content": []
+    },
+    {
+      "name": "supplieslist",
+      "title": "Supplies List",
+      "position": 8,
+      "state": "unmounted",
+      "content": []
+    },
+    {
+      "name": "searchnext",
+      "title": "Search Next",
+      "position": 9,
+      "state": "unmounted",
+      "content": []
+    },
+    {
+      "name": "timeline",
+      "title": "Timeline",
+      "position": 10,
+      "state": "unmounted",
+      "content": []
+    }
+  ]
+}

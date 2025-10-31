@@ -1,0 +1,141 @@
+{{ $jsonName := printf "%s%s" "list" ".json" }}
+{{ $carousel := "" }}
+{{ $dataJson := slice }}
+{{ with .Get 0 }}
+	{{ $carousel = . }}
+{{ else }}
+	{{ $carousel = "carousel-1" }}
+{{ end }}
+
+{{ $path := path.Join $carousel $jsonName }}
+{{ with .Page.Resources.Get $path }}
+  {{ with . | transform.Unmarshal }}
+  	{{ $dataJson = . }}
+  {{ end }}
+{{ else }}
+  {{ errorf "No se obtuvieron recursos para carousel, en el path %q" $path }}
+{{ end }}
+
+<!-- Publica cada uno de los elementos del dataJson contenido en el .json -->
+<div class="row mx-0 mb-3">
+    <!-- Content -->
+    <!-- Las clases .overflow-x-scroll .sc-scroll-enable se utilizan en "base.js" -->
+    <!-- para habilitar el scroll horizontal -->
+    <div class="row row-cols overflow-x-scroll flex-nowrap gx-2 sc-scroll-enable pb-3">
+    <!-- Show data -->
+    {{ $dataJsonLength := len $dataJson }}
+    {{ range $index, $item := $dataJson }}
+      <!-- Define texts according to language -->
+      {{ $titleEN := $item.titleEN }}
+      {{ $titleES := $item.titleES }}
+      {{ $title := "" }}
+      {{ $captionEN := $item.captionEN }}
+      {{ $captionES := $item.captionES }}
+      {{ $caption := "" }}
+      {{ $altTextEN := $item.altTextEN }}
+      {{ $altTextES := $item.altTextES }}
+      {{ $altText := "" }}
+      {{ $urlEN := $item.urlEN }}
+      {{ $urlES := $item.urlES }}
+      {{ $url := "" }}
+      {{ if eq page.Language.Lang "es" }}
+        {{ $title = $titleES }}
+        {{ $caption = $captionES }}
+        {{ $altText = $altTextES }}
+        {{ $url = $urlES }}
+      {{ else }}
+        {{ $title = $titleEN }}
+        {{ $caption = $captionEN }}
+        {{ $altText = $altTextEN }}
+        {{ $url = $urlEN }}
+      {{ end }}
+      {{ $ariaLabel := printf "%s %s" $caption $title }}
+      {{ $modalId := printf "modal-%s-image-%d" $carousel (add $index 1) }}
+      <!-- Para todos los elementos excepto el último -->
+      {{ if lt $index (sub $dataJsonLength 1) }}
+        {{ $number := $item.number }}
+        {{ $imageName := printf "%s/%s*.webp" $carousel $number }}
+        <!-- Las imágenes no pueden tener nombres repetidos en otros carruseles -->
+        {{ $image := page.Resources.GetMatch $imageName }}
+        {{ with $image }}
+        <div class="col-8 col-md-7">
+          <buton type="button" class="position-relative"
+            data-bs-toggle="modal" 
+            data-bs-target="#{{ $modalId }}">
+            <!-- Ícono para indicar la posibilidad de hacer zoom en la imagen -->
+            <div class="position-absolute text-white text-opacity-75 bottom-0 end-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 32 32">
+                <path fill-rule="evenodd" d="M13.96 0A9.75 9.75 0 0 0 4.5 9.76a9.75 9.75 0 1 0 19.5 0A9.75 9.75 0 0 0 13.96.01zm.29 2.25a7.5 7.5 0 0 1 7.5 7.5 7.5 7.5 0 0 1-7.5 7.5 7.5 7.5 0 0 1-7.5-7.5 7.5 7.5 0 0 1 7.5-7.5z"/>
+                <path d="m8.48 17.61-.14.18-5.78 5.77a1.5 1.5 0 0 1-2.12-2.12l5.77-5.78a1.51 1.51 0 0 1 .18-.15 9.8 9.8 0 0 0 2.1 2.1z"/>
+                <path fill-rule="evenodd" d="M14.25 4.5a.75.75 0 0 0-.75.75V9H9.75a.75.75 0 0 0 0 1.5h3.75v3.75a.75.75 0 0 0 1.5 0V10.5h3.75a.75.75 0 0 0 0-1.5H15V5.25a.75.75 0 0 0-.75-.75Z"/>
+              </svg>     
+            </div>
+            <img src="{{ $image.Permalink }}" 
+              class="rounded-4" 
+              alt="{{ with $altText }}{{ . }}{{ end }}" 
+              width="{{ $image.Width }}" 
+              height="{{ $image.Height }}"
+              loading="lazy">
+          </buton>
+        </div>
+        {{ end }}
+
+        <!-- Modal -->
+        <div class="modal fade" id="{{ $modalId }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header p-2">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ T "close" }}"></button>
+              </div>
+              {{ with $image }}
+              <div class="modal-body text-center p-0">
+                <img src="{{ $image.Permalink }}" 
+                  alt="{{ with $altText }}{{ . }}{{ end }}" 
+                  width="{{ $image.Width }}" 
+                  height="{{ $image.Height }}"
+                  loading="lazy">
+              </div>
+              {{ end }}
+              <div class="modal-footer flex-column align-items-start position-relative">
+                {{ with $title }}
+                <a class="stretched-link text-decoration-none text-body" 
+                  href="{{ $url }}" 
+                  target="_shower-center-referred" role="button" >
+                  <!-- Title -->
+                  <div class="fs-5 fw-medium mb-1">{{ . }}</div>
+                  {{ with $caption }}
+                  <!-- Caption -->
+                    <p class="fw-normal">
+                      {{ $caption }}
+                    </p>
+                  {{ end }}
+                </a>
+                {{ end }}
+              </div>      
+            </div>
+          </div>
+        </div>
+
+      <!-- Para el último elemento -->
+      {{ else }}
+        <!-- View more button -->
+        <div class="col-7">
+          <div class="d-flex flex-column h-100 border-0 justify-content-center align-items-center position-relative mx-auto">
+            <div class="">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+            </div>
+            <div class="flex-grow-0 p-0">
+              <p class="small pt-2">
+                <a class="stretched-link text-body text-decoration-none" href="{{ $url }}" target="_shower-center-referred" role="button" >
+                  {{ with $title }}{{ . }}{{ end }}
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      {{ end }}        
+    {{ end }}
+    </div>
+</div>

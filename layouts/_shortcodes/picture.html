@@ -1,0 +1,28 @@
+<!-- Get variables from short code -->
+{{ $alt := .Get "alt" }}
+{{ $title := .Get "title" }}
+{{ $imageWebpName := .Get "webp" }}
+{{ $webp := "" }}
+{{ $lazy := .Get "lazy" | default false }}
+{{ $scale := .Get "scale" | default 1.0 }}
+{{ $shortcodeCall := .Position }}
+<!-- Go Processing variables -->
+{{ with $imageWebpName }}
+  {{ $webp = $.Page.Resources.GetMatch . }}
+{{ else }}
+  {{ errorf "The short code <picture> expects the 'webp' parameter. The incomplete call to the <picture> shortcode was made from the file: %s" $shortcodeCall }}
+{{ end }}
+{{ with $alt }}{{ else }}
+  {{ $alt = print $webp.Name }}
+{{ end }}
+<!-- Calculate scaled width and height -->
+{{ $scaledWidth := mul $webp.Width $scale }}
+{{ $scaledHeight := mul $webp.Height $scale }}
+<!-- Generating HTML -->
+<div class="text-center my-3">
+  <img src="{{ $webp.RelPermalink }}"
+    width="{{ $scaledWidth }}"
+    height="{{ $scaledHeight }}"
+    alt="{{ $alt }}" 
+    {{ with $lazy }} loading="lazy"{{ end }}>
+</div>

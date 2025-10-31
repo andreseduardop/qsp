@@ -1,0 +1,34 @@
+[
+  {
+    "tool-name": "description",
+    "tool-description": "Contains a summary of key project points automatically generated."
+  },
+  {
+    "tool-name": "schedule",
+    "tool-description": "A schedule of one single day that lists activities and their specific timings."
+  },
+  {
+    "tool-name": "checklist",
+    "tool-description": "A checklist or binary task list used to track completion status (done/pending) of items."
+  },
+  {
+    "tool-name": "stepslist",
+    "tool-description": "A steps list that defines a sequential, ordered set of steps required to complete a process."
+  },
+  {
+    "tool-name": "teamlist",
+    "tool-description": "A team list detailing team members and their assigned roles or responsibilities."
+  },
+  {
+    "tool-name": "supplieslist",
+    "tool-description": "A supplies list or inventory that details required materials or items."
+  },
+  {
+    "tool-name": "searchnext",
+    "tool-description": "A list of search terms or relevant topics/keywords for further research or investigation."
+  },
+  {
+    "tool-name": "timeline",
+    "tool-description": "A timeline or chronological overview highlighting key milestones, events, or phases of a project."
+  }
+]

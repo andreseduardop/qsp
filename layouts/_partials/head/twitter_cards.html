@@ -1,0 +1,28 @@
+<!-- Busca parámetro 'images' en el .md -->
+{{- with $.Params.images -}}
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:image" content="{{ index . 0 | absURL }}"/>
+{{ else -}}
+  <!-- Busca imagen con nombre 'featured' en los recursos de la página -->
+  {{- $images := $.Resources.ByType "image" -}}
+  {{- $image := $images.GetMatch "*feature*" -}}
+  {{- if not $image }}{{ $image = $images.GetMatch "{*cover*,*thumbnail*}" }}{{ end -}}
+  {{- with $image -}}
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:image" content="{{ $image.Permalink }}"/>
+  {{- else -}}
+    {{ with .File }}
+      {{ with $.Site.Params.images }}
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:image" content="{{ index . 0 | absURL }}"/>
+      {{ else }}
+        <meta name="twitter:card" content="summary"/>
+      {{ end }}
+    {{ end }}
+  {{- end -}}
+{{- end }}
+<meta name="twitter:title" content="{{ .Title | plainify }}"/>
+<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end -}}"/>
+{{ with .Site.Params.twitter -}}
+<meta name="twitter:site" content="@{{ . }}"/>
+{{ end -}}

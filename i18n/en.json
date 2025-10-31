@@ -1,0 +1,766 @@
+[
+  {
+    "id": "accept",
+    "translation": "Accept"
+  },
+  {
+    "id": "add_a_custom_message",
+    "translation": "Add a custom message"
+  },
+  {
+    "id": "add_my_gift_list",
+    "translation": "Add my gift list"
+  },
+  {
+    "id": "add_text",
+    "translation": "Add text"
+  },
+  {
+    "id": "all_about_baby_shower",
+    "translation": "All about baby shower"
+  },
+  {
+    "id": "all_about_the_baby_shower",
+    "translation": "All about the baby shower"
+  },
+  {
+    "id": "all_about_the_baby_shower,_in_one_place",
+    "translation": "All about the baby shower in one place"
+  },
+  {
+    "id": "argentina",
+    "translation": "Argentina"
+  },
+  {
+    "id": "amazon_legal_notice_for_event",
+    "translation": "As Amazon Associates we may earn some income from qualifying purchases that meet applicable requirements"
+  },
+  {
+    "id": "australia",
+    "translation": "Australia"
+  },
+  {
+    "id": "baby_card_invitation_cards_to_share",
+    "translation": "BABY Card: Invitation cards to share"
+  },
+  {
+    "id": "baby_on_the_way",
+    "translation": "Baby on the way"
+  },
+  {
+    "id": "baby_shower",
+    "translation": "Baby shower"
+  },
+  {
+    "id": "baby_shower_card_maker",
+    "translation": "Baby Shower Card Maker"
+  },
+  {
+    "id": "invitation_card",
+    "translation": "Baby Shower Invitation"
+  },
+  {
+    "id": "baby_shower_invitation_with",
+    "translation": "Baby shower invitation with"
+  },
+  {
+    "id": "baby_shower_planner",
+    "translation": "Baby Shower Planner"
+  },
+  {
+    "id": "baby_shower_planner_app",
+    "translation": "Baby Shower Planner App"
+  },
+  {
+    "id": "baby_shower_br_planner",
+    "translation": "Baby Shower<br>Planner"
+  },
+  {
+    "id": "back",
+    "translation": "Back"
+  },
+  {
+    "id": "bolivia",
+    "translation": "Bolivia"
+  },
+  {
+    "id": "brazil",
+    "translation": "Brazil"
+  },
+  {
+    "id": "canada",
+    "translation": "Canada"
+  },
+  {
+    "id": "card_preview",
+    "translation": "Card preview"
+  },
+  {
+    "id": "celebrate_with_us",
+    "translation": "Celebrate with us"
+  },
+  {
+    "id": "chile",
+    "translation": "Chile"
+  },
+  {
+    "id": "choose_another",
+    "translation": "Choose another"
+  },
+  {
+    "id": "choose_one_by_clicking",
+    "translation": "Choose one by clicking"
+  },
+  {
+    "id": "choose_other_one",
+    "translation": "Choose other"
+  },
+  {
+    "id": "click_the_button_to_indicate_that_you_will_be_bringing_this",
+    "translation": "Click the button to indicate that you will be bringing this gift to the celebration"
+  },
+  {
+    "id": "close",
+    "translation": "Close"
+  },
+  {
+    "id": "close_button",
+    "translation": "Close button"
+  },
+  {
+    "id": "colombia",
+    "translation": "Colombia"
+  },
+  {
+    "id": "confirm",
+    "translation": "Confirm"
+  },
+  {
+    "id": "confirm_gift",
+    "translation": "Confirm gift"
+  },
+  {
+    "id": "contact",
+    "translation": "Contact"
+  },
+  {
+    "id": "contact_us",
+    "translation": "Contact Us"
+  },
+  {
+    "id": "cookies_policy",
+    "translation": "Cookies policy"
+  },
+  {
+    "id": "copied_link",
+    "translation": "Copied link"
+  },
+  {
+    "id": "copy",
+    "translation": "Copy"
+  },
+  {
+    "id": "copy_link",
+    "translation": "Copy link"
+  },
+  {
+    "id": "costa_rica",
+    "translation": "Costa Rica"
+  },
+  {
+    "id": "coutry",
+    "translation": "Country"
+  },
+  {
+    "id": "create_more_cards_like_this_at",
+    "translation": "Create more cards like this at"
+  },
+  {
+    "id": "creating_card",
+    "translation": "creating_card"
+  },
+  {
+    "id": "customize",
+    "translation": "Customize"
+  },
+  {
+    "id": "customize_card_text",
+    "translation": "Customize card text"
+  },
+  {
+    "id": "customize_your_card",
+    "translation": "Customize your card"
+  },
+  {
+    "id": "cute_baby_smiling_on_shower_center_home_page",
+    "translation": "Cute baby smiling on Shower Center home page"
+  },
+  {
+    "id": "date",
+    "translation": "Date"
+  },
+  {
+    "id": "decor",
+    "translation": "Decor"
+  },
+  {
+    "id": "decorative_image",
+    "translation": "Decorative image"
+  },
+  {
+    "id": "digital_invitation",
+    "translation": "Digital invitation"
+  },
+  {
+    "id": "do_not_specify",
+    "translation": "Do not specify"
+  },
+  {
+    "id": "dominican_republic",
+    "translation": "Dominican Republic"
+  },
+  {
+    "id": "ecuador",
+    "translation": "Ecuador"
+  },
+  {
+    "id": "edit_information",
+    "translation": "Edit information"
+  },
+  {
+    "id": "el_salvador",
+    "translation": "El Salvador"
+  },
+  {
+    "id": "favors",
+    "translation": "Favors"
+  },
+  {
+    "id": "feature_image",
+    "translation": "Feature image"
+  },
+  {
+    "id": "find_the_gifts_on_the_list_here",
+    "translation": "Find the gifts from the list here"
+  },
+  {
+    "id": "finish_and_share",
+    "translation": "Finish and share"
+  },
+  {
+    "id": "finished_card",
+    "translation": "Finished card"
+  },
+  {
+    "id": "food",
+    "translation": "Food"
+  },
+  {
+    "id": "france",
+    "translation": "France"
+  },
+  {
+    "id": "free_online_tools",
+    "translation": "Free online tools"
+  },
+  {
+    "id": "frequently_asked_questions",
+    "translation": "Frequently Asked Questions(FAQ)"
+  },
+  {
+    "id": "games",
+    "translation": "Games"
+  },
+  {
+    "id": "generate_with_ai",
+    "translation": "Generate with AI"
+  },
+  {
+    "id": "get_started_with_the_free_online_planning_tool",
+    "translation": "Get started with the Free Online Planning Tool"
+  },
+  {
+    "id": "get_the_gifts_on_the_list_here",
+    "translation": "Get the gifts on the list here"
+  },
+  {
+    "id": "gift_list",
+    "translation": "Gift list"
+  },
+  {
+    "id": "gift_list_for_this_event",
+    "translation": "Gift list for this event"
+  },
+  {
+    "id": "gift_list_maker",
+    "translation": "Gift List<br>Maker"
+  },
+  {
+    "id": "gifts",
+    "translation": "Gifts"
+  },
+  {
+    "id": "go_to_home",
+    "translation": "Go to home"
+  },
+  {
+    "id": "got_it",
+    "translation": "Got it"
+  },
+  {
+    "id": "guatemala",
+    "translation": "Guatemala"
+  },
+  {
+    "id": "honduras",
+    "translation": "Honduras"
+  },
+  {
+    "id": "i_accept_the",
+    "translation": "I accept the"
+  },
+  {
+    "id": "if_you_go_on_surfing",
+    "translation": "If you continue browsing this website we consider that you accept its use"
+  },
+  {
+    "id": "i_ll_give_this",
+    "translation": "I'll give this"
+  },
+  {
+    "id": "info",
+    "translation": "Info"
+  },
+  {
+    "id": "invitation_cards",
+    "translation": "Invitation<br>Cards"
+  },
+  {
+    "id": "invitations",
+    "translation": "Invitations"
+  },
+  {
+    "id": "italy",
+    "translation": "Italy"
+  },
+  {
+    "id": "join_us_for_a_baby_shower",
+    "translation": "Join us for a baby shower"
+  },
+  {
+    "id": "join_us_to_celebrate",
+    "translation": "Join us to celebrate"
+  },
+  {
+    "id": "latin_america",
+    "translation": "Latin America"
+  },
+  {
+    "id": "lets_create_wonderful_memories",
+    "translation": "Let's create wonderful memories together"
+  },
+  {
+    "id": "link",
+    "translation": "Link"
+  },
+  {
+    "id": "link_to_videocall",
+    "translation": "Link (to video call or google maps)"
+  },
+  {
+    "id": "loading",
+    "translation": "Loading"
+  },
+  {
+    "id": "look_below_finish_button",
+    "translation": "Look below for the 'Finish' button to save and share it"
+  },
+  {
+    "id": "make_invitation",
+    "translation": "Make invitation"
+  },
+  {
+    "id": "make_it_easy",
+    "translation": "Make it easy"
+  },
+  {
+    "id": "mark_as_selected",
+    "translation": "Mark as Selected"
+  },
+  {
+    "id": "message",
+    "translation": "Message"
+  },
+  {
+    "id": "mexico",
+    "translation": "Mexico"
+  },
+  {
+    "id": "mothers_or_babys_name",
+    "translation": "Mom's or baby's name"
+  },
+  {
+    "id": "more_ideas",
+    "translation": "More ideas"
+  },
+  {
+    "id": "more_useful_tips",
+    "translation": "More Useful Tips"
+  },
+  {
+    "id": "my_baby_shower_planner",
+    "translation": "My baby shower planner"
+  },
+  {
+    "id": "next",
+    "translation": "Next"
+  },
+  {
+    "id": "nicaragua",
+    "translation": "Nicaragua"
+  },
+  {
+    "id": "north_america",
+    "translation": "North America"
+  },
+  {
+    "id": "ups",
+    "translation": "Oops!"
+  },
+  {
+    "id": "oops_there_has_been_an_error",
+    "translation": "oops! There has been an error in the browser"
+  },
+  {
+    "id": "other_country",
+    "translation": "Other country"
+  },
+  {
+    "id": "others",
+    "translation": "Others"
+  },
+  {
+    "id": "our_recommended_products_from_amazon",
+    "translation": "Our recommended products from Amazon.com"
+  },
+  {
+    "id": "panama",
+    "translation": "Panama"
+  },
+  {
+    "id": "paraguay",
+    "translation": "Paraguay"
+  },
+  {
+    "id": "peru",
+    "translation": "Peru"
+  },
+  {
+    "id": "place",
+    "translation": "Place"
+  },
+  {
+    "id": "place_or_address",
+    "translation": "Place or address"
+  },
+  {
+    "id": "planning",
+    "translation": "Planning"
+  },
+  {
+    "id": "planning_invitations_decor_food_gifts_games",
+    "translation": "planning, invitations, decor, food, gifts, games"
+  },
+  {
+    "id": "play",
+    "translation": "Play"
+  },
+  {
+    "id": "please_choose_an_option",
+    "translation": "Please choose an option"
+  },
+  {
+    "id": "please_confirm_to_avoid_repeated_gifts",
+    "translation": "Please confirm to avoid repeated gifts"
+  },
+  {
+    "id": "please_reload_the_page_to_correct_it",
+    "translation": "Please reload the page to correct it"
+  },
+  {
+    "id": "choose_one_by_clicking_it",
+    "translation": "Please, choose one by clicking it"
+  },
+  {
+    "id": "prepare",
+    "translation": "Prepare"
+  },
+  {
+    "id": "preview",
+    "translation": "Preview"
+  },
+  {
+    "id": "privacy_policy",
+    "translation": "Privacy Policy"
+  },
+  {
+    "id": "puerto_rico",
+    "translation": "Puerto Rico"
+  },
+  {
+    "id": "quick_ideas",
+    "translation": "Quick ideas"
+  },
+  {
+    "id": "read_more",
+    "translation": "Read more"
+  },
+  {
+    "id": "remember_that_on_amazon_the_first_shipment_is_free",
+    "translation": "Remember that on Amazon the first shipment is free"
+  },
+  {
+    "id": "remember_to_bring_this_gift",
+    "translation": "Remember to bring this gift to the baby shower"
+  },
+  {
+    "id": "remember_to_write_a_name",
+    "translation": "Remember to write a name"
+  },
+  {
+    "id": "remember_to_write_a_place",
+    "translation": "Remember to write a place"
+  },
+  {
+    "id": "reserved_gift",
+    "translation": "Reserved gift"
+  },
+  {
+    "id": "save_or_share_this_tip",
+    "translation": "Save or Share this Tip"
+  },
+  {
+    "id": "see_you_there",
+    "translation": "See you there!"
+  },
+  {
+    "id": "select_the_card",
+    "translation": "Select card"
+  },
+  {
+    "id": "select_this_box_to_share",
+    "translation": "Select this box to share"
+  },
+  {
+    "id": "selected_card",
+    "translation": "Selected card"
+  },
+  {
+    "id": "selected_gift",
+    "translation": "Selected gift"
+  },
+  {
+    "id": "send",
+    "translation": "Send"
+  },
+  {
+    "id": "send_by_email",
+    "translation": "Send by email"
+  },
+  {
+    "id": "send_by_whatsapp",
+    "translation": "Send by Whatsapp"
+  },
+  {
+    "id": "send_to_whatsapp",
+    "translation": "Send to WhatsApp"
+  },
+  {
+    "id": "share",
+    "translation": "Share"
+  },
+  {
+    "id": "share_on_facebook",
+    "translation": "Share on Facebook"
+  },
+  {
+    "id": "share_on_twitter",
+    "translation": "Share on Twitter"
+  },
+  {
+    "id": "share_our_joy",
+    "translation": "Share our joy"
+  },
+  {
+    "id": "share_this_link_to_send_it",
+    "translation": "Share this link to send it"
+  },
+  {
+    "id": "share_this_tip",
+    "translation": "Share this Tip"
+  },
+  {
+    "id": "share_tip",
+    "translation": "Share tip"
+  },
+  {
+    "id": "show",
+    "translation": "Show"
+  },
+  {
+    "id": "show_confetti",
+    "translation": "Show confetti"
+  },
+  {
+    "id": "skip_to_content",
+    "translation": "Skip to content"
+  },
+  {
+    "id": "some_ideas_to_surprise_the_future_mom",
+    "translation": "Some ideas to surprise the future mom"
+  },
+  {
+    "id": "some_suggestions",
+    "translation": "Some suggestions"
+  },
+  {
+    "id": "spain",
+    "translation": "Spain"
+  },
+  {
+    "id": "other_language_version",
+    "translation": "Spanish version"
+  },
+  {
+    "id": "sure_im_in",
+    "translation": "Sure, I'm in!"
+  },
+  {
+    "id": "table_of_content",
+    "translation": "Table of content"
+  },
+  {
+    "id": "thanks",
+    "translation": "Thanks!"
+  },
+  {
+    "id": "the_10_most_original_gifts_for_a_baby_shower",
+    "translation": "The 10 most original gifts for a baby shower"
+  },
+  {
+    "id": "the_charm_is_in_the_details",
+    "translation": "The charm is in the details"
+  },
+  {
+    "id": "the_invitation_to_the_event_has_been_created_in_the_link",
+    "translation": "The invitation to the event has been created in the link"
+  },
+  {
+    "id": "this_is_a_preview",
+    "translation": "This is a preview"
+  },
+  {
+    "id": "page_no_found",
+    "translation": "This is an error. The requested URL was not found on this server."
+  },
+  {
+    "id": "time",
+    "translation": "Time"
+  },
+  {
+    "id": "time_to_customize_your_event",
+    "translation": "Time to customize your event!"
+  },
+  {
+    "id": "tips",
+    "translation": "Tips"
+  },
+  {
+    "id": "to_send_the_invitation",
+    "translation": "To send the invitation it is necessary that you enter our page in a browser that supports JavaScript"
+  },
+  {
+    "id": "to-do_list",
+    "translation": "To-do list"
+  },
+  {
+    "id": "united_states",
+    "translation": "United States"
+  },
+  {
+    "id": "uruguay",
+    "translation": "Uruguay"
+  },
+  {
+    "id": "use_of_cookies",
+    "translation": "Use of cookies"
+  },
+  {
+    "id": "venezuela",
+    "translation": "Venezuela"
+  },
+  {
+    "id": "view_in",
+    "translation": "Ver en"
+  },
+  {
+    "id": "view",
+    "translation": "View"
+  },
+  {
+    "id": "view_more",
+    "translation": "View more"
+  },
+  {
+    "id": "amazon_legal_notice",
+    "translation": "We have carefully selected these products to recommend to you. And we want to let you know that as Amazon Affiliates we earn from qualifying purchases that meet the applicable requirements"
+  },
+  {
+    "id": "we_use_cookies_to",
+    "translation": "We use cookies to provide you with a greater user experience as detailed in our"
+  },
+  {
+    "id": "why_include_a_gift_list",
+    "translation": "Why include a gift list"
+  },
+  {
+    "id": "write_here",
+    "translation": "Write here"
+  },
+  {
+    "id": "write_here_to_add",
+    "translation": "Write here to add"
+  },
+  {
+    "id": "yes",
+    "translation": "Yes"
+  },
+  {
+    "id": "you_already_have_it",
+    "translation": "You already have it?"
+  },
+  {
+    "id": "you_have_already_selected_a_gift",
+    "translation": "You have already selected a gift"
+  },
+  {
+    "id": "your_choice_will_be_secret",
+    "translation": "Your choice will be secret"
+  },
+  {
+    "id": "...",
+    "translation": ""
+  },
+  {
+    "id": "...",
+    "translation": ""
+  },
+  {
+    "id": "...",
+    "translation": ""
+  },
+  {
+    "id": "...",
+    "translation": ""
+  }
+]

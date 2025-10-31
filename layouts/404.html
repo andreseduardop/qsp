@@ -1,0 +1,14 @@
+{{ define "main"}}
+<div class="container">
+  <div class="alert alert-light col col-lg-6 my-5 mx-auto">
+    <h1 class="alert-heading fw-light">
+      {{ T "ups" }}
+    </h1>
+    <hr>
+    <p class="">{{ T "page_no_found" }}</p>
+    <p class="text-center">
+      <a class="btn btn-secondary text-body" href="{{ relLangURL "/" }}">{{ T "go_to_home" }}</a>
+    </p>
+  </div>
+</div>
+{{ end }}

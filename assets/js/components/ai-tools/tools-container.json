@@ -1,0 +1,103 @@
+[
+  {
+    "name": "description",
+    "description": "Contains a summary of key project points automatically generated.",
+    "title": "Description",
+    "content": {
+      "text": "Text describing this activity."
+    }
+  },
+  {
+    "name": "schedule",
+    "description": "A schedule of one single day that lists activities and their specific timings.",
+    "title": "Schedule",
+    "content": [
+      {
+        "id": "schedule-01",
+        "text": "Activity 1",
+        "time": "08:00", 
+        "format": "HH:MM"
+      },
+      {
+        "id": "schedule-02",
+        "text": "Activity 2",
+        "time": "09:00",
+        "format": "HH:MM"
+      },
+      {
+        "id": "__END__",
+        "text": "End",
+        "time": "11:00",
+        "note": "This element is mandatory and must be retained at the end." 
+      }
+    ]
+  },
+  {
+    "name": "checklist",
+    "description": "A checklist or binary task list used to track completion status (done/pending) of items.",
+    "title": "Checklist",
+    "content": [
+      {
+        "id": "checklist-01",
+        "text": "task 1",
+        "checked": false
+      }
+    ]
+  },
+  {
+    "name": "stepslist",
+    "description": "A steps list that defines a sequential, ordered set of steps required to complete a process.",
+    "title": "Steps",
+    "content": [
+      {
+        "id": "stepslist-01",
+        "text": "step 1"
+      }
+    ]
+  },
+  {
+    "name": "teamlist",
+    "description": "A team list detailing team members and their assigned roles or responsibilities.",
+    "title": "Team & Roles",
+    "content": [
+      {
+        "id": "teamlist-01",
+        "role": "role 1",
+        "name": ""
+      }
+    ]
+  },
+  {
+    "name": "supplieslist",
+    "description": "A supplies list or inventory that details required materials or items.",
+    "title": "Supplies List",
+    "content": [
+      {
+        "id": "supplieslist-01",
+        "text": "supply 1",
+        "obtained": false
+      }
+    ]
+  },
+  {
+    "name": "searchnext",
+    "description": "A list of search terms or relevant topics/keywords for further research or investigation.",
+    "title": "Search Next",
+    "content": [
+      "topic to search 1",
+      "topic to search 2"
+    ]
+  },
+  {
+    "name": "timeline",
+    "description": "A timeline or chronological overview highlighting key milestones, events, or phases of a project.",
+    "title": "Timeline",
+    "content": [
+      {
+        "id": "timeline-01",
+        "heading": "Activity 1",
+        "description": "Activity 1 description text."
+      }
+    ]
+  }
+]

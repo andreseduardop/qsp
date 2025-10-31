@@ -1,0 +1,60 @@
+[
+  {
+    "question": "Could you tell me more about the event you're planning?",
+    "type": "event",
+    "suggestions": [
+      "Type of event (e.g., conference, party, meeting, wedding)",
+      "Date and location",
+      "Main purpose or goal",
+      "Planned activities",
+      "Theme or style",
+      "Food and beverage needs"
+    ]
+  },
+  {
+    "question": "What are the key details of the project you want to plan?",
+    "type": "project",
+    "suggestions": [
+      "Main objective or desired outcome",
+      "Anticipated deadlines",
+      "Major milestones or phases",
+      "Required resources (people, budget, tools)",
+      "Key team members"
+    ]
+  },
+  {
+    "question": "Can you describe the trip you'd like to plan?",
+    "type": "trip",
+    "suggestions": [
+      "Destination(s)",
+      "Dates and duration",
+      "Main purpose of the trip (e.g., leisure, business, study)",
+      "Preferred type of accommodation (e.g., hotel, Airbnb, camping)",
+      "Required transportation (flights, car rental, train)",
+      "Main activities or sights you want to see"
+    ]
+  },
+  {
+    "question": "What's the overall plan for the class or lecture?",
+    "type": "class",
+    "suggestions": [
+      "Subject matter or topic",
+      "Target audience or student level",
+      "Duration (e.g., 60 minutes, a full semester)",
+      "Main learning objectives or takeaways",
+      "Format (e.g., in-person, online, interactive)",
+      "Necessary materials or technology"
+    ]
+  },
+  {
+    "question": "What specific activity are you trying to plan?",
+    "type": "else",
+    "suggestions": [
+      "Desired result or outcome",
+      "Dates or duration",
+      "What exactly needs to be done",
+      "Steps or actions required to complete it",
+      "Any people or resources needed"
+    ]
+  }
+]

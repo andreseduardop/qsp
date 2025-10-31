@@ -1,0 +1,85 @@
+baseURL: 'https://quicksmartplan.netlify.app/'
+title: 'Quick Smart Plan'
+languageCode: en
+defaultContentLanguage: en
+defaultContentLanguageInSubdir: false
+enableMissingTranslationPlaceholders: true
+enableGitInfo: true
+enableInlineShortcodes: true
+removePathAccents: true
+pluralizeListTitles: false
+summaryLength: 35
+
+disableKinds:
+- taxonomy
+- term
+
+build:
+  buildStats:
+    enable: true
+  cachebusters:
+  - source: assets/watching/hugo_stats\.json
+    target: styles\.css
+  - source: (postcss|tailwind)\.config\.js
+    target: css
+  - source: assets/.*\.(js|ts|jsx|tsx)
+    target: js
+  - source: assets/.*\.(.*)$
+    target: $1
+
+params:
+  description: 'Universal online planner for organizing, tracking, and automating any project, event, or task with collaborative, hierarchical, and intelligent management tools.'
+  footer: '&copy; 2025 All Rights Reserved, quicksmartplan App&#8482;'
+  dateFormat: 'Jan 2, 2006'
+  author: quicksmartplan App
+  images:
+    - images/site-featured-image.jpg
+  katex: false
+  darkThemeAsDefault: false
+  headingLinks: false
+
+markup:
+  goldmark:
+    extensions:
+      definitionList: true
+      footnote: true
+      linkify: true
+      strikethrough: true
+      table: true
+      taskList: true
+      typographer: true
+    parser:
+      autoHeadingID: true
+      autoHeadingIDType: github
+      attribute:
+        block: true
+        title: true
+    renderer:
+      hardWraps: false
+      unsafe: true
+      xHTML: false
+  tableOfContents:
+    startLevel: 2
+    endLevel: 3
+    ordered: false
+
+module:
+  mounts:
+  - source: assets
+    target: assets
+  - source: content
+    target: content
+  - source: static
+    target: static
+  - source: layouts
+    target: layouts
+  - source: data
+    target: data
+  - source: node_modules
+    target: assets
+  - source: i18n
+    target: i18n
+  - source: archetypes
+    target: archetypes
+  - source: hugo_stats.json
+    target: assets/watching/hugo_stats.json

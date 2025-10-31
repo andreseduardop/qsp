@@ -1,0 +1,66 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Meta tags para redes sociales -->
+<!-- Se utilizan layouts personalizados en lugar de los _internal de Hugo -->
+{{ partial "head/opengraph.html" . }}
+{{ partial "head/twitter_cards.html" . }}
+<!-- Fin de Meta tags para redes sociales -->
+
+<!-- Meta Robots -->
+{{ if eq .Params._build.list "never" }}
+  <meta name="robots" content="noindex" />
+{{ else }}
+  <meta name="robots" content="max-image-preview:large">
+{{ end }}
+
+<meta name="app-name" content="Quick Smart Plan">
+<meta name="content-base-name" content="{{ with .File }}{{ .ContentBaseName }}{{ end }}">
+<!-- Generated with Hugo -->
+{{ hugo.Generator }}
+<!-- Title and description -->
+<title>
+  {{ $title := "" }}
+  {{ if .IsHome }}
+    {{- $title = print .Title -}}
+  {{ else }}
+    {{- $title = print .Title " | " .Site.Title -}}
+  {{ end }}
+  {{- $title | plainify -}}
+</title>
+<meta name="description" content='{{ .Param "description" | plainify | truncate 150 }}'>
+
+<!-- Canonical URL -->
+<link rel="canonical" href="{{ .Permalink }}">
+
+<!-- Versiones en cada idioma -->
+{{ range .AllTranslations }}
+  <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" />
+{{ end }}
+{{ range .AllTranslations }}
+  {{ if eq .Language.Lang "en" }}
+    <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+  {{ end }}
+{{ end }}
+
+<!-- thumbnail  -->
+{{- $images := $.Resources.ByType "image" -}}
+{{- $featuredImage := $images.GetMatch "*feature*" -}}
+{{- with $featuredImage }}
+  {{- $image := $featuredImage.Permalink -}}
+  <meta name="thumbnail" content='{{ $image }}'>
+{{ end }}
+<!-- end thumbnail  -->
+
+<!-- Fonts -->
+{{ partial "head/fonts.html" . }}
+
+<!-- Styles   -->
+{{ partial "head/styles.html" . }}
+
+<!-- Favicons -->
+{{ partial "head/favicons.html" . }}
+
+<!-- My schema -->
+{{ partial "head/my-schema.html" . }}
