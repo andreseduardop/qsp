@@ -8,11 +8,11 @@ Whether you’re organizing a personal event, coordinating a professional projec
 
 ## Live demo 
 
-You can see a live demo of the application here: **[https://quicksmartplan.netlify.app/](https://quicksmartplan.netlify.app/)**
+You can see a live demo of the application here: **[https://quicksmartplan.netlify.app/](https://quick-smart-plan.netlify.app)**
 
 ## How to Use the Demo
 
-1.  Navigate to **[quicksmartplan.netlify.app](https://quicksmartplan.netlify.app/)**.
+1.  Navigate to **[quicksmartplan.netlify.app](https://quick-smart-plan.netlify.app)**.
 2.  Follow the on-screen instructions, or click **"New Plan"**.
 3.  Wait a few seconds for the interface to be configured.
 4.  Voilà! An interface adapted to your objectives, composed with the help of **built-in AI APIs**, is ready.
@@ -24,9 +24,9 @@ You can see a live demo of the application here: **[https://quicksmartplan.netli
 
 ## Documentation
 
-You can find the project documentation here: https://deepwiki.com/andreseduardop/listy
+You can find the project documentation here: https://deepwiki.com/andreseduardop/qsp
 
-## Prerequisites
+## Prerequisites for loca Install
 
 Make sure these tools are installed on your development machine:
 
@@ -36,7 +36,7 @@ Make sure these tools are installed on your development machine:
 - Optional: [Dart Sass](https://sass-lang.com/dart-sass) if you want to compile styles outside the Hugo workflow.
 
 
-## Getting started
+## Getting started local Install
 
 1. Clone the repository and change into the project directory.
    ```bash
@@ -65,21 +65,12 @@ HUGO_ENVIRONMENT=production hugo --gc --minify
 
 The output will be saved to the `public/` directory, ready to upload to a static hosting provider.
 
-## Deploying on Netlify
-
-Netlify uses `netlify.toml` to build the site:
-
-- Downloads and enables Dart Sass, and configures the specified versions of Hugo and Node.
-- Runs `hugo --gc --minify --baseURL "$URL"`, ensuring the content is generated with minification and clean resources.
-- Publishes the `public/` directory.
-
-There is no need to define additional commands: pushing to the main branch will automatically trigger this workflow in Netlify.
 
 ## License
 
-This project is released under the [**MIT** license](https://github.com/andreseduardop/listy/blob/main/LICENSE). 
+This project is released under the [**MIT** license](https://github.com/andreseduardop/qsp/blob/main/LICENSE). 
 
 ## Acknowledgments
 
-This product includes the jsonrepair library developed by Jos de Jong and other contributors. Jsonrepair is subject to the ISC license. The full license text can be found [here](https://github.com/josdejong/jsonrepair/blob/main/LICENSE.md).
+This product includes the jsonrepair library -for correcting JSON- developed by Jos de Jong and other contributors. Jsonrepair is subject to the ISC license. The full license text can be found [here](https://github.com/josdejong/jsonrepair/blob/main/LICENSE.md).
 Repository: https://github.com/josdejong/jsonrepair
