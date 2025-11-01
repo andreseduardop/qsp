@@ -1,76 +1,50 @@
 # Quick Smart Plan
 
-**Quick Smart Plan** is an AI-powered web application designed to help you plan, organize, and manage projects, events, and any type of activity with speed and clarity.
+**Quick Smart Plan** is an AI-powered web application designed to help you plan, organize, and manage projects, events, or any type of activity quickly and clearly.
 
-It’s also a **live demonstration of how local, in-browser AI** can dynamically generate pages that adapt to the user’s specific goals in real time. Here, AI moves beyond being just a text generator — it becomes a **user interface generator**, capable of shaping interactive layouts, components, and workflows on demand.
+It also serves as a **live demonstration of how in-browser, local AI** can dynamically generate pages that adapt to a user’s goals in real time. Here, AI goes beyond being a text generator — it becomes a **user interface generator**, capable of creating interactive layouts, components, and workflows on demand.
 
 Whether you’re organizing a personal event, coordinating a professional project, or exploring new ideas, Quick Smart Plan offers an adaptive, intelligent workspace that responds to your intent and helps you stay focused, creative, and efficient.
 
-## Live demo 
 
-You can see a live demo of the application here: **[https://quicksmartplan.netlify.app/](https://quick-smart-plan.netlify.app)**
+## Live Demo
+
+See the live demo of the application here:  
+👉 **[https://quicksmartplan.netlify.app/](https://quicksmartplan.netlify.app)**
+
 
 ## How to Use the Demo
 
-1.  Navigate to **[quicksmartplan.netlify.app](https://quick-smart-plan.netlify.app)**.
-2.  Follow the on-screen instructions, or click **"New Plan"**.
-3.  Wait a few seconds for the interface to be configured.
-4.  Voilà! An interface adapted to your objectives, composed with the help of **built-in AI APIs**, is ready.
+1. Visit **[quicksmartplan.netlify.app](https://quicksmartplan.netlify.app)**.  
+2. Follow the on-screen instructions, or click **“New Plan.”**  
+3. Wait a few seconds for the interface to configure automatically.  
+4. Voilà! — an interface tailored to your objectives is ready, composed in real time with the help of **built-in AI APIs**.
 
-## Key features
 
-* **AI-Powered Layout Composition:** Uses the browser's **built-in AI APIs** to interpret user objectives, translating them into processable **JSON** via JavaScript to compose a page layout adapted to the user's intent.
-* **Dynamic Interface Generation:** Achieved through modular **VanillaJS** components that mount sections such as task lists, step lists, and timelines.
+## Key Features
+
+* **AI-Powered Layout Composition:**  
+  Uses the browser’s **built-in AI APIs** to interpret user objectives and translate them into structured **JSON** through JavaScript, composing a page layout aligned with user intent.
+
+* **Dynamic Interface Generation:**  
+  Achieved through modular **VanillaJS** components that render adaptable sections such as task lists, step lists, and timelines.
+
 
 ## Documentation
 
-You can find the project documentation here: https://deepwiki.com/andreseduardop/qsp
-
-## Prerequisites for loca Install
-
-Make sure these tools are installed on your development machine:
-
-- [Node.js](https://nodejs.org/) 18 or later (Netlify uses 22.12.0 in its configuration).
-- [npm](https://www.npmjs.com/) or [pnpm](https://pnpm.io/) to install the project’s Node.js dependencies.
-- [Hugo Extended](https://gohugo.io/getting-started/installing/) 0.115 or later, required to process SCSS.
-- Optional: [Dart Sass](https://sass-lang.com/dart-sass) if you want to compile styles outside the Hugo workflow.
-
-
-## Getting started local Install
-
-1. Clone the repository and change into the project directory.
-   ```bash
-   git clone <repo-url>
-   cd listy
-   ```
-2. Install the project dependencies.
-   ```bash
-   npm install
-   ```
-3. Run the Hugo development server (include drafts and future-dated content if needed).
-   ```bash
-   hugo server -D
-   ```
-4. Open `http://localhost:1313` in your browser. Changes in `content/`, `layouts/`, `assets/`, and `static/` will be reflected automatically.
-
-## Production build
-
-Generate the optimized version that Netlify publishes with:
-```bash
-HUGO_ENVIRONMENT=production hugo --gc --minify
-```
-- `--gc` cleans orphaned resources in `resources/`.
-- `--minify` compresses HTML, CSS, and JS.
-- The PostCSS pipeline runs automatically thanks to `postcss.config.js`.
-
-The output will be saved to the `public/` directory, ready to upload to a static hosting provider.
+Full project documentation is available here:  
+🔗 [https://deepwiki.com/andreseduardop/qsp](https://deepwiki.com/andreseduardop/qsp)
 
 
 ## License
 
-This project is released under the [**MIT** license](https://github.com/andreseduardop/qsp/blob/main/LICENSE). 
+This project is released under the [**MIT License**](https://github.com/andreseduardop/qsp/blob/main/LICENSE).
+
 
 ## Acknowledgments
 
-This product includes the jsonrepair library -for correcting JSON- developed by Jos de Jong and other contributors. Jsonrepair is subject to the ISC license. The full license text can be found [here](https://github.com/josdejong/jsonrepair/blob/main/LICENSE.md).
-Repository: https://github.com/josdejong/jsonrepair
+This product includes the **jsonrepair** library — used for correcting JSON — developed by **Jos de Jong** and other contributors.
+Jsonrepair is distributed under the ISC license.
+You can find the full license text [here](https://github.com/josdejong/jsonrepair/blob/main/LICENSE.md).
+Repository: [https://github.com/josdejong/jsonrepair](https://github.com/josdejong/jsonrepair)
+

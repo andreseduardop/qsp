@@ -204,6 +204,7 @@
       "w-100"
     ],
     "ids": [
+      "",
       "ai-generator-input-template",
       "ai-generator-screen-1",
       "ai-generator-suggestions-template",
@@ -230,6 +231,7 @@
       "section-new-plan",
       "sideMenu",
       "stepslist-container",
+      "streaming-screen",
       "supplieslist-check-1",
       "supplieslist-check-2",
       "supplieslist-container",

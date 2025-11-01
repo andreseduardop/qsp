@@ -47,9 +47,9 @@ const SELECTORS = /** @type {const} */ ({
 /** @const {string} */
 const SECTION_NEW_PLAN = "section-new-plan";
 /** @const {string} */
-const SCREEN_STREAMING = "screen-streaming";
-/** @const {string} */
 const APP_AI_GENERATOR = "app-ai-generator";
+/** @const {string} */
+const STREAMING_SCREEN = "streaming-screen";
 
 /* ==========================================================================
  * Utilities
@@ -107,8 +107,26 @@ function deepClone(v) {
  * Sretreaming screen and Backdrop
  * ========================================================================= */
 function streamingScreen() {
+  console.log('streamingScreen')
+  const temp = document.getElementById(APP_AI_GENERATOR);
+  if (temp) temp.classList.add("d-none");
   const appAiGenerator = document.getElementById(APP_AI_GENERATOR);
   if (appAiGenerator) appAiGenerator.classList.add("d-none");
+  // Comentario: evita duplicados si ya existe un backdrop activo
+  let node = document.getElementById(STREAMING_SCREEN);
+  if (node) node.classList.remove("d-none");
+  if (!node) {
+    node = el("div", {
+          className: "app-card col app-scroll-enable overflow-y-auto app-vh-75",
+          attrs: { "data-id": String(item.id), id: STREAMING_SCREEN },
+        });
+    // Comentario: inserta justo antes del cierre de </body> (último hijo)
+    document.body.appendChild(node);
+  }
+  // Comentario: devuelve función que elimina el backdrop de forma segura
+  return () => {
+    try { node.remove(); } catch { /* no-op */ }
+  };
 
   // const = 
 }
@@ -538,6 +556,7 @@ class Controller {
   /** @private */
   async _onSubmitDetails(text) {
     // Comentario: muestra backdrop mientras se genera el proyecto
+    const disposeStreamingScreen = streamingScreen();
     const disposeBackdrop = mountBackdrop();
     try {
       // Comentario: guarda detalles en el modelo
@@ -743,7 +762,8 @@ class Controller {
       try { this._resolveCreated?.(newId); } catch {}
       return newId;
     } finally {
-      // Comentario: retira el backdrop incluso si hubo errores
+      // Comentario: retira el backdrop y screen incluso si hubo errores
+      disposeStreamingScreen();
       disposeBackdrop();
     }
   }
