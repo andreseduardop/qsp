@@ -17,8 +17,8 @@ See the live demo of the application here:
 
 1. Visit **[quick-smart-plan.netlify.app](https://quick-smart-plan.netlify.app/)**.  
 2. Follow the on-screen instructions, or click **“New Plan.”**  
-3. Wait a few seconds for the interface to configure automatically.  
-4. Voilà! — an interface tailored to your objectives is ready, composed in real time with the help of **built-in AI APIs**.
+3. Wait a little while for the interface to generated automatically.  
+4. Voilà! — an interface tailored to your objectives is ready, created in real time with the help of **built-in AI APIs**.
 
 
 ## Key Features
