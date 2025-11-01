@@ -44,6 +44,12 @@ const SELECTORS = /** @type {const} */ ({
     'textarea[data-role="inline-editor"], textarea[name="inline-editor"]',
   optionButton: 'button[data-option]',
 });
+/** @const {string} */
+const SECTION_NEW_PLAN = "section-new-plan";
+/** @const {string} */
+const SCREEN_STREAMING = "screen-streaming";
+/** @const {string} */
+const APP_AI_GENERATOR = "app-ai-generator";
 
 /* ==========================================================================
  * Utilities
@@ -98,8 +104,14 @@ function deepClone(v) {
 }
 
 /* ==========================================================================
- * Backdrop
+ * Sretreaming screen and Backdrop
  * ========================================================================= */
+function streamingScreen() {
+  const appAiGenerator = document.getElementById(APP_AI_GENERATOR);
+  if (appAiGenerator) appAiGenerator.classList.add("d-none");
+
+  // const = 
+}
 // Comentario: monta un backdrop al final del <body> y devuelve un disposer para retirarlo
 function mountBackdrop() {
   // Comentario: evita duplicados si ya existe un backdrop activo

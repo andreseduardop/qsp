@@ -38,8 +38,9 @@ const CONTAINER_2 = "app-container-2";
 
 /** @const {string} */
 const SECTION_NEW_PLAN = "section-new-plan";
-/** @const {string} (sic) nombre según solicitud del usuario */
+/** @const {string} */
 const SECTION_ACTIVE_PLANN = "section-active-plann";
+
 
 /* ============================================================================
  * Título de la app (#app-title)
