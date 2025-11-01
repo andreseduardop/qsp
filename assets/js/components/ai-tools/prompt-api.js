@@ -1,291 +1,251 @@
 /**
- * @fileoverview Chrome Prompt API client (LanguageModel-first with window.ai fallback).
- * Exposes a single public function `queryPrompt(prompt, opts)` that returns the
- * raw Prompt API response for the given prompt.
+ * @fileoverview Streamed wrapper for Chrome's Prompt API with line-buffered publishing + auto focus.
+ * @version 1.3.0
  *
- * Version: 1.1.1
- * License: MIT
- * Style: Google JavaScript Style Guide.
+ * - Exports: promptApi(promptText)
+ * - Streams chunks from session.promptStreaming() but publishes only on full lines
+ * - Skips structural JSON tokens and blank lines when publishing
+ * - Each published line gets programmatic focus and is scrolled into view
+ * - Returns the full concatenated string after streaming completes
+ * - Passes expectedOutputs to LanguageModel.availability() and LanguageModel.create()
+ *
+ * Requisitos:
+ *  - Prompt API disponible en el navegador (LanguageModel.*). Ver documentación oficial:
+ *    https://developer.chrome.com/docs/ai/prompt-api
  */
 
-'use strict';
+/** Referencia de sesión (lazy) */
+// Comentario: almacena la sesión de LanguageModel para reutilizarla entre llamadas
+let _session = null;
+
+/** Opciones compartidas para availability() y create() */
+// Comentario: define la salida esperada (texto en inglés) para validar y crear la sesión
+const SESSION_OPTIONS = {
+  expectedOutputs: [
+    { type: 'text', languages: ['en'] },
+  ],
+};
+
+/** Lista de tokens estructurales a omitir al publicar */
+// Comentario: define los tokens exactos que se omiten si componen una línea completa
+const structuralTokensToOmit = ['[', ']', '],', '{', '}', '},'];
+const _STRUCTURAL_SET = new Set(structuralTokensToOmit.map(t => String(t)));
 
 /**
- * @typedef {Object} QueryOptions
- * @property {AbortSignal=} signal Abort signal to cancel operations.
- * @property {number=} temperature Sampling temperature (if supported). Default: 0.
- * @property {number=} topK Top-K sampling (if supported). Default: 1.
- * @property {Object=} responseConstraint Optional JSON Schema for structured output.
- * @property {boolean=} omitResponseConstraintInput If true, omits schema from input tokens.
- * @property {Array<{type: 'text'|'image'|'audio', languages?: string[] }>=} expectedInputs
- * @property {Array<{type: 'text', languages?: string[] }>=} expectedOutputs
- * @property {Array<{role: 'system'|'user', content: (string|Array<{type:string,value:any}>)}>=} initialPrompts
+ * Crea (si no existe) y devuelve el contenedor de streaming.
+ * @returns {HTMLElement}
  */
-
-/**
- * SRP: Encapsula la detección de la API y la creación de sesiones.
- * Abierto/cerrado: Permite ampliación añadiendo nuevos adaptadores sin modificar clientes.
- * Liskov: Ambos adaptadores cumplen la misma interfaz.
- * ISP: Interfaz mínima para crear y usar sesiones.
- * DIP: Los consumidores dependen de abstracciones, no de implementaciones concretas.
- */
-class AbstractPromptAdapter {
-  /** @return {Promise<'available'|'downloadable'|'downloading'|'unavailable'>} */
-  // expone disponibilidad de la API detectada.
-  availability() { throw new Error('Not implemented'); }
-
-  /** @param {QueryOptions=} opts @return {Promise<any>} */
-  // crea y retorna una sesión lista para invocar prompt().
-  async createSession(opts) { throw new Error('Not implemented'); }
+function ensureStreamingScreen() {
+  // Comentario: garantiza que el contenedor #streaming-screen esté disponible en el DOM
+  let host = null;
+  try {
+    host = document.getElementById('streaming-screen');
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'streaming-screen';
+      document.body.appendChild(host);
+    }
+  } catch (err) {
+    // Comentario: en caso de error de DOM, lanza un mensaje claro
+    throw new Error(`[prompt-api] cannot ensure streaming container: ${err?.message || err}`);
+  }
+  return host;
 }
 
 /**
- * Implementación para la API moderna: global `LanguageModel`.
+ * Hace una publicación segura de una línea en el contenedor como <div class="m-0">,
+ * y mueve el enfoque hacia esa línea de forma programática.
+ * @param {HTMLElement} host
+ * @param {string} line
  */
-class LanguageModelAdapter extends AbstractPromptAdapter {
-  // verifica si existe el objeto global.
-  static isSupported() {
-    return typeof globalThis.LanguageModel?.availability === 'function' &&
-           typeof globalThis.LanguageModel?.create === 'function';
-  }
+function publishLine(host, line) {
+  // Comentario: agrega una fila al contenedor, usa textContent para evitar inyección
+  try {
+    const div = document.createElement('div');
+    div.classList = 'm-0 fs-3';
+    div.textContent = line;
 
-  /** @override */
-  async availability() {
-    // consulta disponibilidad indicando idioma de salida ('en' por defecto). Al consultar sin idioma indicado se dispara advertencia en la consola.
-    return /** @type {Promise<'available'|'downloadable'|'downloading'|'unavailable'>} */ (
-      globalThis.LanguageModel.availability({
-        expectedOutputs: [{ type: 'text', languages: ['en'] }],
-      })
-    );
-  }
+    // Comentario: hace el <div> programáticamente enfocable sin afectar el orden de tabulación
+    // - tabindex="-1" permite focus por script, pero no con la tecla Tab
+    // - ver MDN sobre tabindex y focus()
+    div.setAttribute('tabindex', '-1');
 
+    host.appendChild(div);
 
-  /** @override */
-  async createSession(opts = {}) {
-    // prepara opciones; por defecto fuerza salida en inglés ('en').
-    const {
-      temperature,
-      topK,
-      expectedInputs,
-      expectedOutputs,
-      initialPrompts,
-      signal,
-    } = opts;
-
-    /** @type {Array<{type:'text', languages?: string[]}>} */
-    // si no hay expectedOutputs, agrega inglés para cumplir políticas.
-    const normalizedExpectedOutputs =
-        expectedOutputs && expectedOutputs.length
-          ? expectedOutputs
-          : [{type: 'text', languages: ['en']}];
-
-    const createOpts = {
-      ...(typeof temperature === 'number' ? {temperature} : {}),
-      ...(typeof topK === 'number' ? {topK} : {}),
-      ...(expectedInputs ? {expectedInputs} : {}),
-      expectedOutputs: normalizedExpectedOutputs,
-      ...(initialPrompts ? {initialPrompts} : {}),
-      ...(signal ? {signal} : {}),
-    };
-
-    // crea sesión; el propio objeto de sesión expone prompt() y promptStreaming().
-    return globalThis.LanguageModel.create(createOpts);
-  }
-}
-
-/**
- * Implementación de compatibilidad para la API previa: `window.ai`.
- */
-class WindowAIAdapter extends AbstractPromptAdapter {
-  static isSupported() {
-    return typeof globalThis.window !== 'undefined' &&
-           typeof globalThis.window.ai?.createTextSession === 'function';
-  }
-
-  /** @override */
-  async availability() {
-    // al no existir availability() oficial, aproxima con canCreateTextSession().
-    if (!WindowAIAdapter.isSupported()) return 'unavailable';
+    // Comentario: intenta mover el foco; usa preventScroll si está disponible
     try {
-      const status = await globalThis.window.ai.canCreateTextSession?.();
-      if (status === 'no' || status === 'unsupported') return 'unavailable';
-      if (status === 'readily' || status === 'readily-available') return 'available';
-      if (status === 'after-download') return 'downloadable';
-      return 'available';
+      // preventScroll=false (predeterminado) provoca desplazamiento al elemento
+      // ver MDN: HTMLElement.focus(options.preventScroll)
+      div.focus({ preventScroll: false });
     } catch {
-      return 'unavailable';
+      // Comentario: compatibilidad; algunos navegadores no soportan el objeto options
+      div.focus();
     }
-  }
 
-  /** @override */
-  async createSession(opts = {}) {
-    const {temperature, topK, signal} = opts;
-    // crea sesión de texto; `window.ai` no soporta expectedOutputs ni JSON Schema.
-    const session = await globalThis.window.ai.createTextSession?.({
-      ...(typeof temperature === 'number' ? {temperature} : {}),
-      ...(typeof topK === 'number' ? {topK} : {}),
-      ...(signal ? {signal} : {}),
-    });
-    return session;
-  }
-}
-
-/**
- * Factoría/Localizador del adaptador adecuado.
- */
-class PromptAdapterFactory {
-  // selecciona la mejor implementación disponible en tiempo de ejecución.
-  static getAdapter() {
-    if (LanguageModelAdapter.isSupported()) return new LanguageModelAdapter();
-    if (WindowAIAdapter.isSupported()) return new WindowAIAdapter();
-    return null;
+    // Comentario: asegura visibilidad en contenedores con overflow; usa scrollIntoView
+    // ver MDN: Element.scrollIntoView()
+    try {
+      div.scrollIntoView({ block: 'end', inline: 'nearest' });
+    } catch {
+      // Comentario: fallback simple
+      div.scrollIntoView();
+    }
+  } catch (err) {
+    // Comentario: registra pero no interrumpe el flujo si falla la publicación
+    console.error('[prompt-api] failed to publish/focus line:', err);
   }
 }
 
 /**
- * Servicio de alto nivel que gestiona ciclo de vida de la sesión y ejecución del prompt.
+ * Determina si una línea debe omitirse (token estructural o en blanco).
+ * @param {string} rawLine
+ * @returns {boolean}
  */
-class PromptService {
-  constructor() {
-    /** @type {AbstractPromptAdapter|null} */
-    // guarda adaptador elegido; aplica DIP.
-    this.adapter_ = PromptAdapterFactory.getAdapter();
-    /** @type {any|null} */
-    this.session_ = null;
-    /** @type {boolean} */
-    this.initialized_ = false;
-    /** @type {'languageModel'|'windowAi'|null} */
-    // recuerda tipo de backend para aplicar ajustes específicos.
-    this.backend_ = null;
-  }
-
-  /**
-   * @private
-   * @param {QueryOptions=} opts
-   * @return {Promise<void>}
-   */
-  async init_(opts) {
-    // normaliza defaults: temperature=0, topK=1 si no vienen definidos.
-    const normalizedOpts = {...(opts || {})};
-    if (typeof normalizedOpts.temperature !== 'number') normalizedOpts.temperature = 0;
-    if (typeof normalizedOpts.topK !== 'number') normalizedOpts.topK = 1;
-
-    // valida soporte y disponibilidad; crea sesión bajo demanda.
-    if (!this.adapter_) {
-      throw new Error(
-          'Chrome Prompt API is not available in this environment. ' +
-          'Please use a supported version of Chrome with built-in AI enabled.');
-    }
-
-    const availability = await this.adapter_.availability();
-    if (availability === 'unavailable') {
-      throw new Error(
-          'The language model is unavailable. Ensure device requirements are met ' +
-          'and you are running a supported Chrome build.');
-    }
-    if (availability === 'downloadable' || availability === 'downloading') {
-      // la descarga requiere gesto del usuario.
-      throw new Error(
-          'The on-device model must be downloaded first. Trigger a user interaction ' +
-          '(e.g., click) before calling this function so Chrome can start/finish the download.');
-    }
-
-    // crea la sesión con las opciones ya normalizadas (incluye defaults).
-    this.session_ = await this.adapter_.createSession(normalizedOpts);
-
-    // detecta backend efectivo para lógica específica (p. ej., window.ai).
-    this.backend_ = (this.adapter_ instanceof LanguageModelAdapter)
-      ? 'languageModel'
-      : (this.adapter_ instanceof WindowAIAdapter ? 'windowAi' : null);
-
-    this.initialized_ = true;
-  }
-
-  /**
-   * @private
-   * @param {string} prompt
-   * @return {string}
-   */
-  enforceEnglish_(prompt) {
-    // asegura salida en inglés cuando el backend no soporta expectedOutputs.
-    if (this.backend_ === 'windowAi') {
-      // añade instrucción ligera sin alterar semántica del usuario.
-      return `${prompt}\n\n[Instruction: Please answer in English only.]`;
-    }
-    return prompt;
-  }
-
-  /**
-   * Ejecuta un prompt y retorna la respuesta cruda de la API subyacente.
-   *
-   * @param {string} prompt Texto del usuario.
-   * @param {QueryOptions=} opts Opciones opcionales (temperatura, topK, JSON Schema, etc.).
-   * @return {Promise<any>} Respuesta devuelta por `session.prompt(...)`. En la API moderna
-   *     suele ser `string` (o JSON string si se usa `responseConstraint` boolean/number/object).
-   */
-  async run(prompt, opts = {}) {
-    if (typeof prompt !== 'string' || !prompt.trim()) {
-      // valida argumento.
-      throw new TypeError('`prompt` must be a non-empty string.');
-    }
-
-    if (!this.initialized_) {
-      await this.init_(opts);
-    }
-
-    const session = this.session_;
-
-    // API moderna: soporta responseConstraint y omitResponseConstraintInput.
-    if (typeof session?.prompt === 'function') {
-      const callOpts = {};
-      if ('responseConstraint' in opts) {
-        callOpts.responseConstraint = opts.responseConstraint;
-      }
-      if ('omitResponseConstraintInput' in opts) {
-        callOpts.omitResponseConstraintInput = !!opts.omitResponseConstraintInput;
-      }
-      if ('signal' in opts) {
-        callOpts.signal = opts.signal;
-      }
-
-      const finalPrompt = this.enforceEnglish_(prompt);
-      return session.prompt(finalPrompt, callOpts);
-    }
-
-    // si por alguna razón no hay prompt(), lanza error explícito.
-    throw new Error('Prompt session does not support prompt().');
-  }
+function shouldOmitLine(rawLine) {
+  // Comentario: trimea la línea y valida si es vacía o coincide con tokens estructurales
+  const t = (rawLine ?? '').trim();
+  if (!t) return true;                   // línea en blanco
+  if (_STRUCTURAL_SET.has(t)) return true; // token estructural exacto
+  return false;
 }
-
-/** @type {PromptService|null} */
-// instancia única para reusar sesión cuando sea posible.
-let singletonService = null;
 
 /**
- * PUBLIC API (única función): ejecuta un prompt y retorna la respuesta cruda de Prompt API.
- *
- * @param {string} prompt Texto del usuario a enviar al modelo.
- * @param {QueryOptions=} opts Opciones de consulta (ver typedef).
- * @return {Promise<any>} Respuesta cruda de la Prompt API (p. ej., `string` o JSON string).
- *
- * @example
- * // Basic:
- * const out = await queryPrompt('Write a haiku about llamas.');
- *
- * @example
- * // Structured output (boolean):
- * const out = await queryPrompt('Is this about pottery? ' + post, {
- *   responseConstraint: {type: 'boolean'},
- * });
- *
- * @example
- * // Language enforced to English by default; can still override if needed:
- * const out = await queryPrompt('Summarize this:', {
- *   expectedOutputs: [{type: 'text', languages: ['en']}],
- * });
+ * Convierte una entrada chunk en texto seguro.
+ * @param {any} chunk
+ * @returns {string}
  */
-export async function promptApi(prompt, opts = undefined) {
-  // crea servicio perezosamente y delega ejecución.
-  if (!singletonService) singletonService = new PromptService();
-  return singletonService.run(prompt, opts ?? {});
+function normalizeChunk(chunk) {
+  // Comentario: convierte cualquier tipo a string sin lanzar
+  if (typeof chunk === 'string') return chunk;
+  if (chunk == null) return '';
+  try {
+    // Comentario: intenta representar objetos de manera estable
+    if (typeof chunk === 'object') {
+      // Si el chunk es ya texto estructurado, devuelve JSON estable
+      return JSON.stringify(chunk);
+    }
+    return String(chunk);
+  } catch {
+    return '';
+  }
 }
+
+/**
+ * Verifica disponibilidad y crea (o reutiliza) una sesión de LanguageModel.
+ * @returns {Promise<any>} Sesión de LanguageModel.
+ */
+async function getOrCreateSession() {
+  // Comentario: valida existencia de la API
+  if (typeof window === 'undefined' || typeof window.LanguageModel === 'undefined') {
+    throw new Error('[prompt-api] LanguageModel API not found. Update Chrome or enable built-in AI.');
+    }
+
+  // Comentario: comprueba disponibilidad con las mismas opciones que se usarán al crear
+  let availability;
+  try {
+    availability = await LanguageModel.availability({ ...SESSION_OPTIONS });
+  } catch (err) {
+    throw new Error(`[prompt-api] availability() failed: ${err?.message || err}`);
+  }
+
+  if (availability === 'unavailable') {
+    throw new Error('[prompt-api] Model unavailable for requested outputs on this device/profile.');
+  }
+
+  // Comentario: crea la sesión si no existe, aplicando las opciones declaradas
+  if (!_session) {
+    try {
+      _session = await LanguageModel.create({
+        ...SESSION_OPTIONS,
+        // Comentario: se podría añadir monitor de descarga para UX (ver guía oficial)
+        // monitor(m) {
+        //   m.addEventListener('downloadprogress', (e) => {
+        //     console.debug(`[prompt-api] model download: ${Math.round((e.loaded ?? 0) * 100)}%`);
+        //   });
+        // },
+      });
+    } catch (err) {
+      throw new Error(`[prompt-api] create() failed: ${err?.message || err}`);
+    }
+  }
+  return _session;
+}
+
+/**
+ * Envía un prompt por streaming, publica solo líneas completas y devuelve el texto completo.
+ * - Acumula partials en un buffer y publica únicamente al detectar saltos de línea.
+ * - Omite tokens estructurales definidos y líneas en blanco al publicar.
+ * - Mueve el foco a cada línea publicada.
+ *
+ * @param {string} promptText - Texto a enviar a la Prompt API.
+ * @returns {Promise<string>} Texto completo concatenado al finalizar.
+ */
+export async function promptApi(promptText) {
+  // Comentario: valida entrada del usuario
+  if (typeof promptText !== 'string' || !promptText.trim()) {
+    throw new TypeError('[prompt-api] promptApi(promptText) expects a non-empty string.');
+  }
+
+  // Comentario: obtiene o crea el contenedor de streaming
+  const host = ensureStreamingScreen();
+
+  // Comentario: muestra marcador inicial opcional
+  const startDiv = document.createElement('div');
+  startDiv.className = 'm-0';
+  startDiv.textContent = '…';
+  try { host.appendChild(startDiv); } catch { /* no-op */ }
+
+  // Comentario: prepara variables de streaming
+  let full = '';
+  let buffer = ''; // acumula hasta detectar salto(s) de línea
+
+  // Comentario: obtiene o crea la sesión de modelo
+  const session = await getOrCreateSession();
+
+  try {
+    // Comentario: inicia el streaming del modelo
+    const stream = session.promptStreaming(promptText);
+
+    // Comentario: recorre los chunks del modelo
+    for await (const chunk of stream) {
+      const piece = normalizeChunk(chunk);
+      full += piece;
+      buffer += piece;
+
+      // Comentario: procesa líneas completas si existen saltos de línea en el buffer
+      // Soporta \n y \r\n. Conserva el último segmento como parcial.
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() ?? '';
+
+      for (const line of lines) {
+        if (!shouldOmitLine(line)) {
+          publishLine(host, line);
+        }
+      }
+    }
+  } catch (err) {
+    // Comentario: informa el error en la UI y relanza
+    publishLine(host, `[prompt-api] streaming failed: ${err?.message || err}`);
+    throw err;
+  } finally {
+    // Comentario: retira el marcador inicial si sigue sin cambios
+    try {
+      if (startDiv?.isConnected && startDiv.textContent === '…') {
+        startDiv.remove();
+      }
+    } catch { /* no-op */ }
+  }
+
+  // Comentario: publica la última línea parcial si quedó contenido (sin requerir \n final)
+  // Si se desea estrictamente esperar a '\n', comentar el bloque siguiente.
+  if (buffer && !shouldOmitLine(buffer)) {
+    publishLine(host, buffer);
+  }
+
+  // Comentario: devuelve el texto completo generado (sin filtrado)
+  return full;
+}
+
+// Exporta también los tokens por si se requiere en otros módulos (opcional)
+// Comentario: permite que otros módulos conozcan/compartan la política de omisión
+export { structuralTokensToOmit };
