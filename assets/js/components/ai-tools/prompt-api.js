@@ -53,7 +53,7 @@ function ensureStreamingScreen() {
 }
 
 /**
- * Hace una publicación segura de una línea en el contenedor como <div class="m-0">,
+ * Hace una publicación segura de una línea en el contenedor como <div class="m-0 fs-2">,
  * y mueve el enfoque hacia esa línea de forma programática.
  * @param {HTMLElement} host
  * @param {string} line
@@ -62,7 +62,7 @@ function publishLine(host, line) {
   // Comentario: agrega una fila al contenedor, usa textContent para evitar inyección
   try {
     const div = document.createElement('div');
-    div.classList = 'm-0 fs-3';
+    div.classList = 'm-0 fs-2';
     div.textContent = line;
 
     // Comentario: hace el <div> programáticamente enfocable sin afectar el orden de tabulación
@@ -191,8 +191,8 @@ export async function promptApi(promptText) {
 
   // Comentario: muestra marcador inicial opcional
   const startDiv = document.createElement('div');
-  startDiv.className = 'm-0';
-  startDiv.textContent = '…';
+  startDiv.className = 'm-0 fs-2';
+  startDiv.textContent = '»';
   try { host.appendChild(startDiv); } catch { /* no-op */ }
 
   // Comentario: prepara variables de streaming
@@ -230,7 +230,7 @@ export async function promptApi(promptText) {
   } finally {
     // Comentario: retira el marcador inicial si sigue sin cambios
     try {
-      if (startDiv?.isConnected && startDiv.textContent === '…') {
+      if (startDiv?.isConnected && startDiv.textContent === '»') {
         startDiv.remove();
       }
     } catch { /* no-op */ }

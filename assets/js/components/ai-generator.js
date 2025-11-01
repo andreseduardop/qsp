@@ -107,7 +107,6 @@ function deepClone(v) {
  * Sretreaming screen and Backdrop
  * ========================================================================= */
 function streamingScreen() {
-  console.log('streamingScreen')
   const temp = document.getElementById(APP_AI_GENERATOR);
   if (temp) temp.classList.add("d-none");
   const appAiGenerator = document.getElementById(APP_AI_GENERATOR);
@@ -678,8 +677,8 @@ class Controller {
       // Comentario: genera título y descripción concisos para el plan
       const promptText3 =
         `You are helping a user plan an activity.\n` +
-        `Activity to plan: ${eventType}\n` +
-        `Activity details: ${eventDetails}\n\n` +
+        `Activity to plan: ${eventType}.\n` +
+        `Activity details: ${eventDetails}.\n\n` +
         `Write a concise, human-friendly TITLE and a single-paragraph DESCRIPTION for this plan.\n` +
         `Requirements:\n` +
         `- Title: natural language, 6–50 characters, no trailing period.\n` +
@@ -699,13 +698,16 @@ class Controller {
         console.debug('[ai-generator] Prompt API call to create title and description: \n', promptText3);
         setBackdropText("Creating an interface for you", "Finishing touches...");
         titleDescRaw = await promptApi(promptText3);
+        console.debug(
+          '[ai-generator] Title and description (STRING):\n',  {
+          titleDescRaw,
+        });        
         titleDescParsed = /** @type {any} */ (repairAndParseJson(String(titleDescRaw))) || {};
         generatedTitle = typeof titleDescParsed.title === 'string' ? titleDescParsed.title.trim() : '';
         generatedDescription =
           typeof titleDescParsed.description === 'string' ? titleDescParsed.description.trim() : '';
         console.debug('[ai-generator] Title and description (OBJECT):\n', {
-          generatedTitle,
-          generatedDescription,
+          titleDescParsed,
         });
       } catch (err) {
         // eslint-disable-next-line no-console
