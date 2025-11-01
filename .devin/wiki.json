@@ -1,0 +1,302 @@
+{
+  "repo_notes": [
+    {
+      "content": "This document provides a comprehensive introduction to Quick Smart Plan (QSP), an AI-powered planning application that demonstrates how browser-native AI can dynamically generate user interfaces tailored to specific user goals."
+    }
+  ],
+  "pages": [
+    {
+      "title": "Overview",
+      "purpose": "Introduce Quick Smart Plan, explain its purpose as an AI-powered planning application, and provide a high-level understanding of the system architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Key Concepts",
+      "purpose": "Explain the fundamental concepts: AI-powered UI generation, browser-native AI APIs, static site architecture, and client-side-only design",
+      "parent": "Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Technology Stack",
+      "purpose": "Document the complete technology stack including Hugo, VanillaJS, Bootstrap, PostCSS, and browser AI APIs",
+      "parent": "Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Getting Started",
+      "purpose": "Guide developers through setup, installation, and running the application locally",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Prerequisites and Installation",
+      "purpose": "Detail required tools (Node.js, Hugo, npm/pnpm) and installation steps",
+      "parent": "Getting Started",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Development Workflow",
+      "purpose": "Explain how to run the development server, make changes, and test locally",
+      "parent": "Getting Started",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Build System",
+      "purpose": "Comprehensive documentation of the Hugo-based build pipeline, asset generation, and deployment process",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Hugo Configuration",
+      "purpose": "Deep dive into hugo.yaml configuration including module mounts, cache busting, markup settings, and parameters",
+      "parent": "Build System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Asset Pipeline",
+      "purpose": "Explain SCSS compilation, PostCSS processing, asset generation, and metadata tracking",
+      "parent": "Build System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Cache Busting Strategy",
+      "purpose": "Document the content-hash-based cache busting mechanism and how asset versioning works",
+      "parent": "Build System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Production Builds",
+      "purpose": "Explain production build process, minification, garbage collection, and deployment to Netlify",
+      "parent": "Build System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Application Architecture",
+      "purpose": "Explain the overall application structure, coordinator pattern, and component system",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Coordinator Pattern",
+      "purpose": "Document the coordinator module that orchestrates application state and component lifecycle",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Application States",
+      "purpose": "Explain the two primary application modes: AI Generation Mode and Active Project Mode",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Component Registry",
+      "purpose": "Document the RENDERERS registry and how components are dynamically loaded and mounted",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Event System",
+      "purpose": "Explain global event handlers (app:new-plan-requested, app:select-project, app:project-created) and event-driven architecture",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "AI Integration",
+      "purpose": "Comprehensive guide to how the application leverages browser-native AI APIs for intelligent UI generation",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Browser AI APIs",
+      "purpose": "Explain the LanguageModel API, availability checking, session creation, and prompt/streaming methods",
+      "parent": "AI Integration",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "AI Generator Component",
+      "purpose": "Deep dive into the ai-generator.js MVC architecture, user interaction flow, and component lifecycle",
+      "parent": "AI Integration",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Three-Stage Generation Pipeline",
+      "purpose": "Document the tool selection, content generation, and metadata generation stages with prompt engineering details",
+      "parent": "AI Integration",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "JSON Parsing and Error Recovery",
+      "purpose": "Explain the robust JSON parsing strategy using jsonrepair, extractJsonSnippet, and error handling for malformed LLM responses",
+      "parent": "AI Integration",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Streaming Responses",
+      "purpose": "Document streaming prompt patterns, buffering strategies, and real-time UI updates",
+      "parent": "AI Integration",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "UI Components",
+      "purpose": "Overview of the modular VanillaJS component system used for project display",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "AI Generator UI",
+      "purpose": "Document the AI generator HTML template, user interaction elements, and template system",
+      "parent": "UI Components",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Component Mounting",
+      "purpose": "Explain how components are mounted, container assignment, and host element management",
+      "parent": "UI Components",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Backdrop and Visual Feedback",
+      "purpose": "Document the backdrop system for showing AI processing state with animated text transitions",
+      "parent": "UI Components",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Styling System",
+      "purpose": "Comprehensive guide to the CSS architecture, Bootstrap integration, and design token system",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "CSS Architecture",
+      "purpose": "Explain the layered CSS architecture: design tokens, base elements, components, and utilities",
+      "parent": "Styling System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Design Tokens",
+      "purpose": "Document CSS custom properties (--bs-* variables) for colors, typography, spacing, and theming",
+      "parent": "Styling System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Bootstrap Integration",
+      "purpose": "Explain Bootstrap component usage, customization, and the comprehensive component ecosystem",
+      "parent": "Styling System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    }
+  ]
+}
