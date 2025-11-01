@@ -870,7 +870,9 @@ main img {
 .app-backdrop .backdrop-subtitle.is-fading-out {
   animation: fadeOut 1s ease-in forwards;
 }
-
+#streaming-screen div:focus {
+  border: none;
+}
 /* respeta preferencias de reducción de movimiento del usuario */
 @media (prefers-reduced-motion: reduce) {
   .app-backdrop span.backdrop-title,
