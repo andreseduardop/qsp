@@ -216,6 +216,8 @@
       "text-primary",
       "text-reset",
       "text-secondary",
+      "text-secondary-emphasis",
+      "text-tertiary-emphasis",
       "top-0",
       "translate-middle-x",
       "type-checkbox",

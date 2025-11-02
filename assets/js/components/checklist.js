@@ -339,7 +339,7 @@ class View {
 
     const label = el("label", {
       className: "form-check-label me-auto",
-      attrs: { for: `textarea-for-${item.id}` },
+      attrs: { for: `checklist-check-${item.id}` },
     });
     label.textContent = item.text;
 
