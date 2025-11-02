@@ -1,0 +1,123 @@
+{
+  "id": "id",
+  "title": "Built-in AI not available",
+  "createdAt": "",
+  "updatedAt": "",
+  "ai-generated": false,
+  "components": [
+    {
+      "name": "searchnext",
+      "title": "Search Next",
+      "position": 1,
+      "state": "mounted",
+      "content": ["Prompt API hardware requirements", "Built-in AI APIs"]
+    },
+    {
+      "name": "description",
+      "title": "Description",
+      "position": 2,
+      "state": "unmounted",
+      "content": {
+        "text": "Draft the full plan for your upcoming event or project here. Remember, you have the ability to edit the content of all other components as well."
+      }
+    },
+    {
+      "name": "checklist",
+      "title": "Checklist",
+      "position": 3,
+      "state": "mounted",
+      "content": [
+        {
+          "id": "checklist-01",
+          "text": "Task 1",
+          "checked": false
+        },
+        {
+          "id": "checklist-02",
+          "text": "Task 2",
+          "checked": false
+        },
+        {
+          "id": "checklist-03",
+          "text": "Task 3",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "name": "timeline",
+      "title": "Timeline",
+      "position": 4,
+      "state": "mounted",
+      "content": [
+        {
+          "id": "timeline-01",
+          "heading": "Activity 1",
+          "description": "Description for activity 1"
+        },
+        {
+          "id": "timeline-02",
+          "heading": "Activity 2",
+          "description": "Description for activity 2"
+        },
+        {
+          "id": "timeline-03",
+          "heading": "Activity 3",
+          "description": "Description for activity 3"
+        }
+      ]
+    },
+    {
+      "name": "schedule",
+      "title": "Schedule",
+      "position": 5,
+      "state": "mounted",
+      "content": [
+        {
+          "id": "schedule-01",
+          "text": "Activity 1",
+          "time": "08:00",
+          "format": "HH:MM"
+        },
+        {
+          "id": "schedule-02",
+          "text": "Activity 2",
+          "time": "09:00",
+          "format": "HH:MM"
+        },
+        {
+          "id": "schedule-03",
+          "text": "Activity 3",
+          "time": "10:00",
+          "format": "HH:MM"
+        },
+        {
+          "id": "__END__",
+          "text": "End",
+          "time": "11:00",
+          "note": "This element is mandatory and must be retained at the end."
+        }
+      ]
+    },
+    {
+      "name": "stepslist",
+      "title": "Steps",
+      "position": 6,
+      "state": "mounted",
+      "content": [
+        {
+          "id": "stepslist-01",
+          "text": "step 1"
+        },
+        {
+          "id": "stepslist-02",
+          "text": "step 2"
+        },
+        {
+          "id": "stepslist-03",
+          "text": "step 3"
+        }
+      ]
+    }
+  ]
+}

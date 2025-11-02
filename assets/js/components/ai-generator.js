@@ -698,10 +698,8 @@ class Controller {
         console.debug('[ai-generator] Prompt API call to create title and description: \n', promptText3);
         setBackdropText("Creating an interface for you", "Finishing touches...");
         titleDescRaw = await promptApi(promptText3);
-        console.debug(
-          '[ai-generator] Title and description (STRING):\n',  {
-          titleDescRaw,
-        });        
+        console.debug('[ai-generator] Title and description (STRING):\n',
+          String(titleDescRaw));        
         titleDescParsed = /** @type {any} */ (repairAndParseJson(String(titleDescRaw))) || {};
         generatedTitle = typeof titleDescParsed.title === 'string' ? titleDescParsed.title.trim() : '';
         generatedDescription =

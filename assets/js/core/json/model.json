@@ -3,6 +3,7 @@
   "title": "title",
   "createdAt": "2025-10-26T09:53:55-05:00",
   "updatedAt": "2025-10-26T09:53:55-05:00",
+  "ai-generated": true,
   "components": [
     {
       "name": "ai-generator",

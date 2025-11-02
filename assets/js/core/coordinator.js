@@ -1,16 +1,18 @@
 /**
  * @fileoverview App-level coordinator that selects and initializes UI components.
  * @module core/coordinator
- * @version 2.6.0
+ * @version 2.9.0
  *
  * @description
  * Starts the application depending on whether there is an active project.
  * Listens for sidebar events to activate an existing project or create a new one.
  * Ensures components re-render when the active project changes.
  * También ajusta el título principal (#app-title) según el estado de la aplicación.
+ * Además, verifica disponibilidad de Prompt API antes de cargar el módulo 'ai-generator.js'.
+ * Si Prompt API está "unavailable", muestra un aviso y prepara un proyecto de ejemplo.
  */
 
-import { renderSidebar } from "../components/sidebar.js"; // (comentario) Monta el sidebar al iniciar
+import { renderSidebar } from "../components/sidebar.js"; // Monta el sidebar al iniciar
 import { renderDescription } from "../components/description.js";
 import { renderChecklist } from "../components/checklist.js";
 import { renderSuppliesList } from "../components/supplieslist.js";
@@ -20,14 +22,17 @@ import { renderTeamList } from "../components/teamlist.js";
 import { renderSearchNext } from "../components/searchnext.js";
 import { renderTimeline } from "../components/timeline.js";
 import { el, visibility } from "../utils/helpers.js";
+import { uid } from "../utils/uid.js"; // Genera ids únicos
+import modelExample from "./json/model-example.json" assert { type: "json" }; // Modelo de ejemplo cuando no hay IA
 import {
   getActiveProjectId,
   getProject,
-  setActiveProject,   // (comentario) Define activo con metadatos del modelo
-  addProjectToList,   // (comentario) Upsert en projectList
-  touchProjectInList, // (comentario) Refresca updatedAt en projectList
-  clearActiveProject, // (comentario) Limpia el proyecto activo (nuevo)
-} from "./storage.js"; // (comentario) APIs de storage
+  setActiveProject,   // Define activo con metadatos del modelo
+  addProjectToList,   // Upsert en projectList
+  touchProjectInList, // Refresca updatedAt en projectList
+  clearActiveProject, // Limpia el proyecto activo (nuevo)
+  setProject,         // Persiste un proyecto completo en localStorage
+} from "./storage.js"; // APIs de storage
 
 /** @const {string} */
 const CONTAINER_0 = "app-container-0";
@@ -39,8 +44,136 @@ const CONTAINER_2 = "app-container-2";
 /** @const {string} */
 const SECTION_NEW_PLAN = "section-new-plan";
 /** @const {string} */
+const SECTION_NOTIFICATION = "section-notification";
+/** @const {string} */
 const SECTION_ACTIVE_PLANN = "section-active-plann";
 
+/* ============================================================================
+ * Prompt API availability (suave)
+ * ========================================================================== */
+
+/** @const {!Object} */
+const SESSION_OPTIONS = {
+  // Declara salidas esperadas según la guía del usuario
+  expectedOutputs: [
+    { type: "text", languages: ["en"] },
+  ],
+};
+
+/**
+ * Verifica disponibilidad de Prompt API usando LanguageModel.availability().
+ * Retorna uno de: "unavailable" | "downloadable" | "downloading" | "available".
+ * @return {Promise<string>}
+ * @throws {Error} Si availability() lanza error.
+ */
+async function getPromptApiAvailability() {
+  // Si no existe el símbolo global, se considera no disponible
+  const hasApi =
+    typeof globalThis !== "undefined" &&
+    globalThis.LanguageModel &&
+    typeof globalThis.LanguageModel.availability === "function";
+
+  if (!hasApi) {
+    return "unavailable";
+  }
+
+  let availability;
+  try {
+    // Invoca availability con las opciones de sesión provistas
+    availability = await globalThis.LanguageModel.availability({ ...SESSION_OPTIONS });
+  } catch (err) {
+    // Re-lanza con mensaje requerido por el usuario
+    throw new Error(`[prompt-api] availability() failed: ${err?.message || err}`);
+  }
+  return availability;
+}
+
+/* ============================================================================
+ * Fallback sin IA (withoutAi)
+ * ========================================================================== */
+
+/**
+ * Modo sin IA: limpia el contenedor, muestra una notificación HTML
+ * y genera un proyecto de ejemplo basado en model-example.json.
+ * Además, persiste el proyecto, lo marca como activo y monta sus componentes.
+ * @param {!HTMLElement=} _parent (sin uso directo aquí; reservado para futuras mejoras)
+ * @return {Promise<void>}
+ */
+async function withoutAi(_parent) {
+  // Clona el modelo de ejemplo
+  const clone = JSON.parse(JSON.stringify(modelExample));
+
+  // Genera id
+  const id = uid();
+
+  // Calcula fechas: ISO para persistencia y MM-DD-YYYY para título
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, "0"); // Rellena con cero a la izquierda
+  const now = `${pad(d.getMonth() + 1)}-${pad(d.getDate())}-${d.getFullYear()}`; // Formatea MM-DD-YYYY
+  const nowISO = d.toISOString(); // Mantiene ISO para createdAt/updatedAt
+
+  // Asigna campos obligatorios
+  clone.id = id;
+  clone.createdAt = nowISO;
+  clone.updatedAt = nowISO;
+  clone.title = `Project ${now}`; // Construye el título solicitado
+
+  try {
+    // Persiste el proyecto y lo lista/marca como activo
+    setProject(id, clone);
+    addProjectToList({
+      id,
+      title: clone.title,
+      createdAt: nowISO,
+      updatedAt: nowISO,
+    });
+    setActiveProject({ id, title: clone.title || null, createdAt: nowISO, updatedAt: nowISO });
+    touchProjectInList(id, nowISO);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("[coordinator] failed to persist fallback project:", err);
+  }
+
+  // Alterna visibilidad: oculta "nuevo plan" y muestra "plan activo"
+  const sectionNewPlan = document.getElementById(SECTION_NEW_PLAN);
+  const sectionActivePlann = document.getElementById(SECTION_ACTIVE_PLANN);
+  if (sectionNewPlan) sectionNewPlan.classList.add("d-none");
+  if (sectionActivePlann) visibility.show(sectionActivePlann);
+
+  // Ajusta título para proyecto activo
+  setAppTitleForProject(clone.title || "");
+
+  // Monta los componentes del proyecto recién creado
+  try {
+    mountActiveProjectComponents(clone, id);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("[coordinator] failed to mount components for fallback project:", err);
+  }
+
+  // Sincroniza el hash para navegación directa al proyecto
+  try {
+    history.replaceState(null, "", `/#${encodeURIComponent(id)}`);
+  } catch {
+    /* Ignora si el navegador no soporta history API */
+  }
+  // Emite evento para actualizar sidebar
+  try {
+    window.dispatchEvent(
+      new CustomEvent("app:project-created", {
+        detail: { id, title: clone.title, source: "coordinator" }, // comenta: pasa id/título
+      }),
+    );
+    // Si se quiere que otros módulos reaccionen al activo:
+    window.dispatchEvent(
+      new CustomEvent("app:active-project-changed", {
+        detail: { id, title: clone.title, source: "coordinator" }, // comenta: sincroniza activo
+      }),
+    );
+  } catch (err) {
+    console.error("[coordinator] failed to dispatch events.", err);
+  }
+}
 
 /* ============================================================================
  * Título de la app (#app-title)
@@ -51,14 +184,14 @@ const SECTION_ACTIVE_PLANN = "section-active-plann";
  * @return {?HTMLHeadingElement}
  */
 function getAppTitleEl() {
-  // (comentario) Busca el elemento del título principal
+  // Busca el elemento del título principal
   const h1 = /** @type {?HTMLHeadingElement} */ (document.getElementById("app-title"));
   if (!h1) {
     // eslint-disable-next-line no-console
     console.warn('[coordinator] #app-title not found');
     return null;
   }
-  // (comentario) Asegura clases estándar solicitadas
+  // Asegura clases estándar solicitadas
   h1.classList.add("app-icono", "fs-3", "my-0", "me-auto");
   return h1;
 }
@@ -68,11 +201,11 @@ function getAppTitleEl() {
  * @return {void}
  */
 function setAppTitleForAi() {
-  // (comentario) Muestra solo el nombre completo de la app
+  // Muestra solo el nombre completo de la app
   const h1 = getAppTitleEl();
   if (!h1) return;
-  h1.textContent = ""; // (comentario) Limpia contenido previo
-  // (comentario) Inserta texto fijo y espacio fino (&ensp;)
+  h1.textContent = ""; // Limpia contenido previo
+  // Inserta texto fijo
   h1.innerHTML = "quick smart plan";
 }
 
@@ -82,14 +215,14 @@ function setAppTitleForAi() {
  * @return {void}
  */
 function setAppTitleForProject(projectTitle = "") {
-  // (comentario) Muestra sigla 'qsp' y el título del proyecto activo
+  // Muestra sigla 'qsp' y el título del proyecto activo
   const h1 = getAppTitleEl();
   if (!h1) return;
 
-  h1.textContent = ""; // (comentario) Limpia contenido previo
+  h1.textContent = ""; // Limpia contenido previo
   h1.innerHTML = 'qsp&ensp;<span class="fw-normal fs-4"></span>';
 
-  // (comentario) Inserta el título de forma segura (textContent)
+  // Inserta el título de forma segura (textContent)
   const span = h1.querySelector("span.fw-normal.fs-4");
   if (span) span.textContent = projectTitle || "(untitled)";
 }
@@ -118,19 +251,19 @@ const RENDERERS = {
  * @return {!HTMLElement}
  */
 function createHost(parent, id) {
-  // (comentario) Reutiliza el host si ya existe para evitar duplicados
+  // Reutiliza el host si ya existe para evitar duplicados
   const existing = document.getElementById(id);
   if (existing) {
-    // (comentario) Si existe pero no está bajo el padre esperado, lo reubica
+    // Si existe pero no está bajo el padre esperado, lo reubica
     if (existing.parentElement !== parent) parent.appendChild(existing);
     return existing;
   }
 
-  // (comentario) Crea un host con atributos de trazabilidad
+  // Crea un host con atributos de trazabilidad
   const host = el("div", {
     attrs: { id, "data-role": "component-host", "data-owner": "coordinator" },
   });
-  parent.appendChild(host); // (comentario) Inserta el host en el DOM
+  parent.appendChild(host); // Inserta el host en el DOM
   return host;
 }
 
@@ -139,19 +272,19 @@ function createHost(parent, id) {
  * @return {void}
  */
 function mountSidebar() {
-  // (comentario) Busca el contenedor del sidebar en el layout principal
+  // Busca el contenedor del sidebar en el layout principal
   const container = document.querySelector(".app-sidebar .offcanvas-body");
   if (!container) {
     // eslint-disable-next-line no-console
     console.warn('[coordinator] sidebar container ".app-sidebar .offcanvas-body" not found');
     return;
   }
-  // (comentario) Evita doble montaje simple con flag de datos
+  // Evita doble montaje simple con flag de datos
   if (container.dataset.mounted === "sidebar") return;
 
   try {
-    renderSidebar(container); // (comentario) Renderiza el módulo sidebar
-    container.dataset.mounted = "sidebar"; // (comentario) Marca como montado
+    renderSidebar(container); // Renderiza el módulo sidebar
+    container.dataset.mounted = "sidebar"; // Marca como montado
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("[coordinator] failed to render sidebar:", err);
@@ -163,18 +296,18 @@ function mountSidebar() {
  * @return {void}
  */
 function attachGlobalHandlers() {
-  // (comentario) Escucha la petición de nuevo plan desde el sidebar
+  // Escucha la petición de nuevo plan desde el sidebar
   window.addEventListener("app:new-plan-requested", () => {
-    // (comentario) Asegura secciones del layout
+    // Asegura secciones del layout
     const sectionNewPlan = document.getElementById(SECTION_NEW_PLAN);
     const sectionActivePlann = document.getElementById(SECTION_ACTIVE_PLANN);
     if (sectionNewPlan) visibility.show(sectionNewPlan);
     if (sectionActivePlann) sectionActivePlann.classList.add("d-none");
 
-    // (comentario) Ajusta título para modo generador de IA
+    // Ajusta título para modo generador de IA
     setAppTitleForAi();
 
-    // (comentario) Carga el generador de IA en el contenedor 0
+    // Carga el generador de IA en el contenedor 0
     const container0 = document.getElementById(CONTAINER_0);
     if (!container0) {
       // eslint-disable-next-line no-console
@@ -184,10 +317,10 @@ function attachGlobalHandlers() {
     // limpiar proyecto activo en el localStorage
     clearActiveProject();
     // eslint-disable-next-line no-floating-promises
-    loadAiGenerator(container0); // (comentario) Ejecuta sin bloquear
+    loadAiGenerator(container0); // Ejecuta sin bloquear
   });
 
-  // (comentario) Escucha selección de proyecto existente desde el sidebar
+  // Escucha selección de proyecto existente desde el sidebar
   window.addEventListener("app:select-project", (ev) => {
     /** @type {{id?: string}} */
     const detail = ev?.detail ?? {};
@@ -198,7 +331,7 @@ function attachGlobalHandlers() {
       return;
     }
 
-    // (comentario) Obtiene el modelo del proyecto seleccionado
+    // Obtiene el modelo del proyecto seleccionado
     const model = getProject(id);
     if (!model) {
       // eslint-disable-next-line no-console
@@ -208,35 +341,35 @@ function attachGlobalHandlers() {
 
     const { title = null, createdAt = null, updatedAt = null } = model || {};
 
-    // (comentario) Define el proyecto activo y actualiza projectList
-    setActiveProject({ id, name: title, createdAt, updatedAt });
+    // Define el proyecto activo y actualiza projectList
+    setActiveProject({ id, title, createdAt, updatedAt });
     touchProjectInList(id, updatedAt || new Date().toISOString());
 
-    // (comentario) Alterna visibilidad de secciones (muestra plan activo)
+    // Alterna visibilidad de secciones (muestra plan activo)
     const sectionNewPlan = document.getElementById(SECTION_NEW_PLAN);
     const sectionActivePlann = document.getElementById(SECTION_ACTIVE_PLANN);
     if (sectionNewPlan) sectionNewPlan.classList.add("d-none");
     if (sectionActivePlann) visibility.show(sectionActivePlann);
 
-    // (comentario) Ajusta título para proyecto activo
+    // Ajusta título para proyecto activo
     setAppTitleForProject(title || "");
 
-    // (comentario) Monta componentes del plan activo — forzar re-render si cambia el proyecto
+    // Monta componentes del plan activo — forzar re-render si cambia el proyecto
     mountActiveProjectComponents(model, id);
 
-    // (comentario) Opcional: sincroniza el hash para navegación profunda
+    // Opcional: sincroniza el hash para navegación profunda
     try {
-      // (comentario) Actualiza el hash sin recargar
       history.replaceState(null, "", `/#${encodeURIComponent(id)}`);
     } catch {
-      /* (comentario) Ignora si el navegador no soporta history API */
+      /* Ignora si el navegador no soporta history API */
     }
   });
 }
 
 /**
  * Carga y renderiza el generador de IA en #app-container-0.
- * Además, espera el id del proyecto creado y configura el activo.
+ * Antes de importar el módulo, verifica disponibilidad de Prompt API.
+ * Si availability === "unavailable", publica aviso en consola y ejecuta withoutAi().
  * @param {!HTMLElement} parent
  * @return {Promise<void>}
  */
@@ -254,19 +387,19 @@ async function loadAiGenerator(parent) {
       throw new Error('[coordinator] "ai-generator.js" does not export a render function');
     }
 
-    // (comentario) Reutiliza (o crea) el host para evitar duplicados
+    // Reutiliza (o crea) el host para evitar duplicados
     const host = createHost(parent, "host-00-ai-generator");
 
-    // (comentario) Evita re-renderizar el mismo módulo si ya está montado
+    // Evita re-renderizar el mismo módulo si ya está montado
     if (host.dataset.mounted === "ai-generator") return;
 
-    // (comentario) Asegura título de modo generador de IA
+    // Asegura título de modo generador de IA
     setAppTitleForAi();
 
     const api = render(host);
-    host.dataset.mounted = "ai-generator"; // (comentario) Marca como montado
+    host.dataset.mounted = "ai-generator"; // Marca como montado
 
-    // (comentario) Espera el id del proyecto creado para activar y reflejar en projectList
+    // Espera el id del proyecto creado para activar y reflejar en projectList
     if (api && typeof api.onCreated?.then === "function") {
       try {
         const newId = await api.onCreated;
@@ -281,7 +414,7 @@ async function loadAiGenerator(parent) {
 
         const { title = null, createdAt = null, updatedAt = null } = model || {};
 
-        // (comentario) Upsert en projectList como red de seguridad
+        // Upsert en projectList como red de seguridad
         addProjectToList({
           id: newId,
           title: title || 'New plan',
@@ -289,30 +422,35 @@ async function loadAiGenerator(parent) {
           updatedAt,
         });
 
-        // (comentario) Notifica globalmente que hay un nuevo plan disponible
+        // Notifica globalmente que hay un nuevo plan disponible
         window.dispatchEvent(
           new CustomEvent("app:project-created", {
             detail: { id: newId, title: title, source: "coordinator" },
           }),
         );
 
-        // (comentario) Define el proyecto activo con título y fechas del modelo
-        setActiveProject({ id: newId, name: title, createdAt, updatedAt });
+        // Define el proyecto activo con título y fechas del modelo
+        setActiveProject({ id: newId, title, createdAt, updatedAt });
 
-        // (comentario) Asegura updatedAt en projectList
+        // Asegura updatedAt en projectList
         touchProjectInList(newId, updatedAt || new Date().toISOString());
 
-        // (comentario) Alterna visibilidad de secciones
+        // Alterna visibilidad de secciones
         const sectionNewPlan = document.getElementById(SECTION_NEW_PLAN);
         const sectionActivePlann = document.getElementById(SECTION_ACTIVE_PLANN);
         if (sectionNewPlan) sectionNewPlan.classList.add("d-none");
         if (sectionActivePlann) visibility.show(sectionActivePlann);
 
-        // (comentario) Ajusta título para proyecto activo recién creado
+        // Ajusta título para proyecto activo recién creado
         setAppTitleForProject(title || "");
 
-        // (comentario) Monta componentes del proyecto activo recién creado (forzando afinidad por proyecto)
+        // Monta componentes del proyecto activo recién creado
         mountActiveProjectComponents(model, newId);
+
+        // Sincroniza hash
+        try {
+          history.replaceState(null, "", `/#${encodeURIComponent(newId)}`);
+        } catch { /* Ignora */ }
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error("[coordinator] failed to finalize new project activation:", err);
@@ -331,8 +469,17 @@ async function loadAiGenerator(parent) {
  * @param {string=} activeProjectId
  * @return {void}
  */
-function mountActiveProjectComponents(projectModel, activeProjectId = getActiveProjectId() || "") {
-  // (comentario) Valida contenedores base para montaje alternado
+async function mountActiveProjectComponents(projectModel, activeProjectId = getActiveProjectId() || "") {
+  // Verifica si el modelo indica que NO fue generado por IA; si es falso, muestra aviso
+  const availability = await getPromptApiAvailability();
+    if (availability === "unavailable") {
+    // Busca la sección de notificación y la hace visible
+    const sectionNotification = document.getElementById(SECTION_NOTIFICATION);
+      console.debug(sectionNotification);
+    if (sectionNotification) visibility.show(sectionNotification);
+  }
+
+  // Valida contenedores base para montaje alternado
   const container1 = document.getElementById(CONTAINER_1);
   const container2 = document.getElementById(CONTAINER_2);
 
@@ -344,22 +491,22 @@ function mountActiveProjectComponents(projectModel, activeProjectId = getActiveP
 
   /** @type {!Array<!HTMLElement>} */
   const parents = [container1];
-  if (container2) parents.push(container2); // (comentario) Agrega el segundo contenedor si está presente
+  if (container2) parents.push(container2); // Agrega el segundo contenedor si está presente
 
-  // (comentario) Limpia hosts de proyectos antiguos para prevenir “fantasmas”
+  // Limpia hosts de proyectos antiguos para prevenir “fantasmas”
   parents.forEach((parent) => {
     const stale = parent.querySelectorAll(
       '[data-role="component-host"][data-owner="coordinator"][data-project-id]',
     );
     stale.forEach((el) => {
       if (el.dataset.projectId !== activeProjectId) {
-        // (comentario) Borra el host si pertenece a otro proyecto
+        // Borra el host si pertenece a otro proyecto
         el.remove();
       }
     });
   });
 
-  // (comentario) Extrae componentes montables y ordena por position ascendente
+  // Extrae componentes montables y ordena por position ascendente
   const components = Array.isArray(projectModel?.components) ? projectModel.components : [];
   const sorted = components
     .filter(
@@ -372,24 +519,24 @@ function mountActiveProjectComponents(projectModel, activeProjectId = getActiveP
     )
     .sort((a, b) => Number(a.position) - Number(b.position));
 
-  // (comentario) Monta alternando entre contenedores disponibles
+  // Monta alternando entre contenedores disponibles
   sorted.forEach((comp, i) => {
     const { name, position } = comp;
     const parent = parents[i % parents.length];
     const hostId = `host-${String(position).padStart(2, "0")}-${name}`;
     const host = createHost(parent, hostId);
 
-    // (comentario) Si el host ya corresponde a este componente y proyecto, no re-renderiza
+    // Si el host ya corresponde a este componente y proyecto, no re-renderiza
     if (host.dataset.mounted === name && host.dataset.projectId === activeProjectId) {
       return;
     }
 
-    // (comentario) Si estaba montado con otro proyecto, limpia y re-renderiza
+    // Si estaba montado con otro proyecto, limpia y re-renderiza
     host.textContent = "";
     try {
-      RENDERERS[name].render(host); // (comentario) Invoca el render del componente
-      host.dataset.mounted = name;   // (comentario) Marca host como montado para ese nombre
-      host.dataset.projectId = activeProjectId; // (comentario) Liga el host al proyecto activo
+      RENDERERS[name].render(host); // Invoca el render del componente
+      host.dataset.mounted = name;   // Marca host como montado para ese nombre
+      host.dataset.projectId = activeProjectId; // Liga el host al proyecto activo
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(`[coordinator] failed to render "${name}" in #${host.id}:`, err);
@@ -401,32 +548,40 @@ function mountActiveProjectComponents(projectModel, activeProjectId = getActiveP
  * Inicia la app respetando la compuerta de "proyecto activo".
  * @return {void}
  */
-export function startApp() {
-  // (comentario) Manejadores globales (escucha acciones de UI como "New Plan" y "Select Project")
+export async function startApp() {
+  // Manejadores globales (escucha acciones de UI como "New Plan" y "Select Project")
   attachGlobalHandlers();
-  // (comentario) Monta el sidebar siempre al inicio
+  // Monta el sidebar siempre al inicio
   mountSidebar();
 
-  // (comentario) Resuelve secciones de layout
+  // Resuelve secciones de layout
   const sectionNewPlan = document.getElementById(SECTION_NEW_PLAN);
   const sectionActivePlann = document.getElementById(SECTION_ACTIVE_PLANN);
 
-  // (comentario) Lee id del proyecto activo (no crea archivos si falta)
+  // Lee id del proyecto activo 
   const activeId = getActiveProjectId();
-
   if (!activeId) {
+    // Verifica disponibilidad de Prompt API 
+    const availability = await getPromptApiAvailability();
+    if (availability === "unavailable") {
+      // eslint-disable-next-line no-console
+      console.warn("[coordinator] Built-in AI not available.");
+      await withoutAi(); // Ejecuta modo sin IA (ahora monta componentes)
+      return; // Sale temprano; no intenta cargar ai-generator
+    }
+
     // ===== Caso 2a: id === null =====
-    // (comentario) Muestra sección de "nuevo plan"
+    // Muestra sección de "nuevo plan"
     if (sectionNewPlan) visibility.show(sectionNewPlan);
     else {
       // eslint-disable-next-line no-console
       console.warn(`[coordinator] section #${SECTION_NEW_PLAN} not found`);
     }
 
-    // (comentario) Ajusta título para modo generador de IA
+    // Ajusta título para modo generador de IA
     setAppTitleForAi();
 
-    // (comentario) Carga ai-generator dentro de #app-container-0
+    // Carga ai-generator dentro de #app-container-0 (previa verificación Prompt API)
     const container0 = document.getElementById(CONTAINER_0);
     if (!container0) {
       // eslint-disable-next-line no-console
@@ -434,19 +589,19 @@ export function startApp() {
       return;
     }
     // eslint-disable-next-line no-floating-promises
-    loadAiGenerator(container0); // (comentario) Ejecución asíncrona sin esperar bloqueante
+    loadAiGenerator(container0); // Ejecución asíncrona sin esperar bloqueante
     return;
   }
 
   // ===== Caso 2b: existe id =====
-  // (comentario) Muestra sección de "plan activo"
+  // Muestra sección de "plan activo"
   if (sectionActivePlann) visibility.show(sectionActivePlann);
   else {
     // eslint-disable-next-line no-console
     console.warn(`[coordinator] section #${SECTION_ACTIVE_PLANN} not found`);
   }
 
-  // (comentario) Solicita contenido completo del proyecto activo y monta componentes con state='mounted'
+  // Solicita contenido completo del proyecto activo y monta componentes con state='mounted'
   let model = null;
   try {
     model = getProject(activeId);
@@ -462,9 +617,9 @@ export function startApp() {
     return;
   }
 
-  // (comentario) Ajusta título para proyecto activo
+  // Ajusta título para proyecto activo
   setAppTitleForProject(model.title || "");
 
-  // (comentario) Monta respetando afinidad de proyecto para evitar F5
+  // Monta respetando afinidad de proyecto para evitar F5
   mountActiveProjectComponents(model, activeId);
 }

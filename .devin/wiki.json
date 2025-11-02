@@ -10,7 +10,7 @@
       "purpose": "Introduce Quick Smart Plan, explain its purpose as an AI-powered planning application, and provide a high-level understanding of the system architecture",
       "page_notes": [
         {
-          "content": ""
+          "content": "The application's key innovation is Prompt API LanguageModel."
         }
       ]
     },
