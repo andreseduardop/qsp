@@ -333,13 +333,13 @@ class View {
 
     const input = el("input", {
       className: "form-check-input",
-      attrs: { type: "checkbox", id: `checklist-check-${item.id}` },
+      attrs: { type: "checkbox", id: `checklist-check-${item.id}`, 'aria-label': `checkbox ${item.id}` },
     });
     input.checked = !!item.checked;
 
     const label = el("label", {
       className: "form-check-label me-auto",
-      attrs: { for: `checklist-check-${item.id}` },
+      attrs: { for: `textarea-for-${item.id}` },
     });
     label.textContent = item.text;
 

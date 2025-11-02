@@ -475,6 +475,7 @@ async function mountActiveProjectComponents(projectModel, activeProjectId = getA
     if (availability === "unavailable") {
     // Busca la sección de notificación y la hace visible
     const sectionNotification = document.getElementById(SECTION_NOTIFICATION);
+      console.debug(sectionNotification);
     if (sectionNotification) visibility.show(sectionNotification);
   }
 
